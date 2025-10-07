@@ -17,6 +17,7 @@ Sistema completo de gestión de usuarios con CRUD para Usuarios, Roles y Permiso
 - Python 3.9+
 - Node.js 18+
 - Docker y Docker Compose
+- Pipenv (se instala con `pip install pipenv`)
 
 ## 🛠️ Instalación y Configuración
 
@@ -55,23 +56,17 @@ docker ps
 # Navegar al directorio backend
 cd backend
 
-# Crear entorno virtual
-python -m venv venv
+# Instalar pipenv (si no lo tienes)
+pip install pipenv
 
-# Activar entorno virtual
-# En Windows:
-venv\Scripts\activate
-# En Linux/Mac:
-source venv/bin/activate
-
-# Instalar dependencias
-pip install -r requirements.txt
+# Instalar dependencias y crear entorno virtual automáticamente
+pipenv install
 
 # Inicializar base de datos con datos de prueba
-python init_db.py
+pipenv run python init_db.py
 
 # Iniciar servidor
-uvicorn app.main:app --reload
+pipenv run uvicorn app.main:app --reload
 ```
 
 El backend estará disponible en: http://localhost:8000
@@ -180,6 +175,7 @@ Usuarios/
 - **Pydantic**: Validación de datos
 - **JWT**: Autenticación con tokens
 - **Bcrypt**: Hash de contraseñas
+- **Pipenv**: Gestión de entornos virtuales y dependencias
 
 ### Frontend
 - **Next.js 14**: Framework de React
@@ -241,14 +237,20 @@ Usuarios/
 
 ```bash
 # Iniciar servidor
-uvicorn app.main:app --reload
+pipenv run uvicorn app.main:app --reload
+
+# O usar el script run.py
+pipenv run python run.py
 
 # Inicializar base de datos
-python init_db.py
+pipenv run python init_db.py
+
+# Entrar al shell de pipenv
+pipenv shell
 
 # Crear migraciones (si usas Alembic)
-alembic revision --autogenerate -m "mensaje"
-alembic upgrade head
+pipenv run alembic revision --autogenerate -m "mensaje"
+pipenv run alembic upgrade head
 ```
 
 ### Frontend

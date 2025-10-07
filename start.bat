@@ -20,9 +20,10 @@ echo.
 
 echo [2/3] Para iniciar el BACKEND:
 echo   cd backend
-echo   venv\Scripts\activate
-echo   python init_db.py
-echo   uvicorn app.main:app --reload
+echo   pip install pipenv
+echo   pipenv install
+echo   pipenv run python init_db.py
+echo   pipenv run python run.py
 echo.
 
 echo [3/3] Para iniciar el FRONTEND (en otra terminal):

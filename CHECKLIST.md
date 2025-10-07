@@ -126,10 +126,10 @@
 
 ### Backend
 - [ ] Iniciar Docker: `docker-compose up -d`
-- [ ] Activar venv: `venv\Scripts\activate`
-- [ ] Instalar deps: `pip install -r requirements.txt`
-- [ ] Inicializar BD: `python init_db.py`
-- [ ] Iniciar server: `python run.py`
+- [ ] Instalar pipenv: `pip install pipenv`
+- [ ] Instalar deps: `pipenv install`
+- [ ] Inicializar BD: `pipenv run python init_db.py`
+- [ ] Iniciar server: `pipenv run python run.py`
 - [ ] Acceder a docs: http://localhost:8000/docs
 - [ ] Probar endpoint login
 - [ ] Probar endpoints de usuarios

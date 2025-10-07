@@ -48,19 +48,20 @@ docker-compose up -d
 ### 2. Backend (FastAPI)
 
 #### Error: "No module named 'app'"
-**Causa:** No estás en el directorio correcto o el venv no está activado.
+**Causa:** No estás en el directorio correcto o pipenv no está instalado.
 
 **Solución:**
 ```bash
 cd backend
-# Windows:
-venv\Scripts\activate
-# Linux/Mac:
-source venv/bin/activate
 
-# Verificar que estás en el venv
-which python  # Linux/Mac
-where python  # Windows
+# Instalar pipenv si no lo tienes
+pip install pipenv
+
+# Instalar dependencias
+pipenv install
+
+# Verificar el entorno
+pipenv --venv  # Muestra la ruta del entorno virtual
 ```
 
 #### Error: "could not connect to server"
@@ -81,7 +82,7 @@ DATABASE_URL=postgresql://admin:admin123@localhost:5433/usuarios_db
 **Solución:**
 ```bash
 cd backend
-pip install -r requirements.txt
+pipenv install
 ```
 
 #### Error al ejecutar init_db.py
@@ -94,7 +95,7 @@ pip install -r requirements.txt
 docker-compose down -v
 docker-compose up -d
 # Espera 10 segundos
-python init_db.py
+pipenv run python init_db.py
 ```
 
 #### Puerto 8000 ocupado
@@ -107,6 +108,9 @@ uvicorn.run(
     port=8001,  # Cambia a 8001
     reload=True
 )
+
+# Ejecutar con pipenv
+pipenv run python run.py
 
 # Y actualizar en frontend/lib/axios.ts
 baseURL: 'http://localhost:8001',
@@ -242,7 +246,10 @@ Ya está implementado con localStorage. Si no funciona:
 **Backend:**
 ```bash
 # Asegúrate de usar --reload
-uvicorn app.main:app --reload
+pipenv run uvicorn app.main:app --reload
+
+# O usar el script run.py que ya incluye --reload
+pipenv run python run.py
 ```
 
 **Frontend:**
@@ -294,13 +301,14 @@ Si ninguna solución funciona:
    
    # Backend
    cd backend
-   rm -rf venv __pycache__
+   pipenv --rm  # Eliminar entorno virtual
+   rm -rf __pycache__
+   pipenv install  # Reinstalar
    
    # Frontend
    cd frontend
    rm -rf node_modules .next
-   
-   # Volver a instalar todo
+   npm install  # Reinstalar
    ```
 
 4. **Abre un issue en GitHub** con:

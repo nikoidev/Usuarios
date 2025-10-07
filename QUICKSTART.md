@@ -15,24 +15,13 @@ Espera 5 segundos para que PostgreSQL inicie completamente.
 
 ## Paso 2: Backend (2 minutos)
 
-### Windows
+### Windows y Linux/Mac
 ```bash
 cd backend
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-python init_db.py
-python run.py
-```
-
-### Linux/Mac
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python init_db.py
-python run.py
+pip install pipenv
+pipenv install
+pipenv run python init_db.py
+pipenv run python run.py
 ```
 
 ✅ Backend corriendo en http://localhost:8000
@@ -92,7 +81,7 @@ docker ps
 ```bash
 # Backend
 cd backend
-pip install -r requirements.txt
+pipenv install
 
 # Frontend
 cd frontend

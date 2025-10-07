@@ -20,23 +20,20 @@ backend/
 ## Instalación
 
 ```bash
-# Crear entorno virtual
-python -m venv venv
+# Instalar pipenv (si no lo tienes)
+pip install pipenv
 
-# Activar entorno virtual
-# Windows:
-venv\Scripts\activate
-# Linux/Mac:
-source venv/bin/activate
-
-# Instalar dependencias
-pip install -r requirements.txt
+# Instalar dependencias y crear entorno virtual
+pipenv install
 
 # Inicializar base de datos
-python init_db.py
+pipenv run python init_db.py
 
 # Iniciar servidor
-uvicorn app.main:app --reload
+pipenv run uvicorn app.main:app --reload
+
+# O usar el script run.py
+pipenv run python run.py
 ```
 
 ## Configuración

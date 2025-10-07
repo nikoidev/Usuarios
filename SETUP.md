@@ -12,17 +12,18 @@ Espera unos segundos para que PostgreSQL esté completamente iniciado.
 
 ```bash
 cd backend
-python -m venv venv
 
-# Windows
-venv\Scripts\activate
+# Instalar pipenv si no lo tienes
+pip install pipenv
 
-# Linux/Mac
-source venv/bin/activate
+# Instalar dependencias
+pipenv install
 
-pip install -r requirements.txt
-python init_db.py
-uvicorn app.main:app --reload
+# Inicializar base de datos
+pipenv run python init_db.py
+
+# Iniciar servidor
+pipenv run uvicorn app.main:app --reload
 ```
 
 El backend estará en http://localhost:8000
@@ -65,5 +66,5 @@ El frontend estará en http://localhost:3000
 - PostgreSQL (5433): Cambia el puerto en docker-compose.yml
 
 ### Módulos no encontrados
-- Backend: Asegúrate de tener el venv activado
+- Backend: Ejecuta `pipenv install` nuevamente
 - Frontend: Ejecuta `npm install` nuevamente

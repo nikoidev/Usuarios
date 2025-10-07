@@ -89,10 +89,10 @@ refactor: improve user service structure
 ### Backend
 ```bash
 # Ejecutar tests
-pytest
+pipenv run pytest
 
 # Con cobertura
-pytest --cov=app tests/
+pipenv run pytest --cov=app tests/
 ```
 
 ### Frontend
