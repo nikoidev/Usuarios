@@ -8,6 +8,8 @@ import { Role, Permission, RoleCreate, RoleUpdate } from '@/types'
 import toast from 'react-hot-toast'
 import { PlusIcon, PencilIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
+export const dynamic = 'force-dynamic'
+
 export default function RolesPage() {
   const [roles, setRoles] = useState<Role[]>([])
   const [permissions, setPermissions] = useState<Permission[]>([])

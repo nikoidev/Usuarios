@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
-import ThemeToggle from '@/components/ThemeToggle'
+import SafeThemeToggle from '@/components/SafeThemeToggle'
 import toast from 'react-hot-toast'
+
+export const dynamic = 'force-dynamic'
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
@@ -31,7 +33,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-900 dark:to-gray-800">
       <div className="absolute top-4 right-4">
-        <ThemeToggle />
+        <SafeThemeToggle />
       </div>
 
       <div className="w-full max-w-md">

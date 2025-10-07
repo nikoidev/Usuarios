@@ -21,6 +21,18 @@ Sistema completo de gestión de usuarios con CRUD para Usuarios, Roles y Permiso
 
 ## 🛠️ Instalación y Configuración
 
+### 🚀 Inicio Rápido con F5
+
+Una vez instalado todo:
+
+1. **Presiona F5** en Cursor/VS Code
+2. **Selecciona**: "Full Stack (Production)"
+3. **Accede a**: http://localhost:3000
+
+Ver más detalles en [START_PRODUCTION.md](START_PRODUCTION.md)
+
+---
+
 ### 1. Clonar el Repositorio
 
 ```bash

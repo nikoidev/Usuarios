@@ -7,6 +7,8 @@ import { Permission, PermissionCreate, PermissionUpdate } from '@/types'
 import toast from 'react-hot-toast'
 import { PlusIcon, PencilIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
+export const dynamic = 'force-dynamic'
+
 export default function PermissionsPage() {
   const [permissions, setPermissions] = useState<Permission[]>([])
   const [loading, setLoading] = useState(true)

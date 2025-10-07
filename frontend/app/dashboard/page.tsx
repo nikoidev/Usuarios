@@ -7,6 +7,8 @@ import { rolesApi } from '@/lib/api/roles'
 import { permissionsApi } from '@/lib/api/permissions'
 import { UsersIcon, ShieldCheckIcon, KeyIcon } from '@heroicons/react/24/outline'
 
+export const dynamic = 'force-dynamic'
+
 export default function DashboardPage() {
   const [stats, setStats] = useState({
     users: 0,

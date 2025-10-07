@@ -7,6 +7,10 @@ import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const dynamic = 'force-dynamic'
+export const dynamicParams = true
+export const revalidate = 0
+
 export const metadata: Metadata = {
   title: 'User Management System',
   description: 'Complete user, role, and permission management system',
