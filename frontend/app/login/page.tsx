@@ -40,10 +40,10 @@ export default function LoginPage() {
         <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Welcome Back
+              Bienvenido de Nuevo
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Sign in to your account
+              Inicia sesión en tu cuenta
             </p>
           </div>
 
@@ -53,7 +53,7 @@ export default function LoginPage() {
                 htmlFor="username"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
               >
-                Username
+                Usuario
               </label>
               <input
                 id="username"
@@ -62,7 +62,7 @@ export default function LoginPage() {
                 onChange={(e) => setUsername(e.target.value)}
                 required
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                placeholder="Enter your username"
+                placeholder="Ingresa tu usuario"
               />
             </div>
 
@@ -71,7 +71,7 @@ export default function LoginPage() {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
               >
-                Password
+                Contraseña
               </label>
               <input
                 id="password"
@@ -80,7 +80,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                placeholder="Enter your password"
+                placeholder="Ingresa tu contraseña"
               />
             </div>
 
@@ -89,12 +89,12 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
             </button>
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-            <p>Default credentials:</p>
+            <p>Credenciales por defecto:</p>
             <p className="font-mono mt-1">admin / admin123</p>
           </div>
         </div>

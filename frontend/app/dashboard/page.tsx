@@ -42,7 +42,7 @@ export default function DashboardPage() {
 
   const cards = [
     {
-      title: 'Total Users',
+      title: 'Total Usuarios',
       value: stats.users,
       icon: UsersIcon,
       color: 'bg-blue-500',
@@ -56,7 +56,7 @@ export default function DashboardPage() {
       href: '/roles',
     },
     {
-      title: 'Total Permissions',
+      title: 'Total Permisos',
       value: stats.permissions,
       icon: KeyIcon,
       color: 'bg-purple-500',
@@ -69,7 +69,7 @@ export default function DashboardPage() {
       <div className="space-y-6">
         <div>
           <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-            Overview
+            Resumen
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {cards.map((card) => (
@@ -97,17 +97,17 @@ export default function DashboardPage() {
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
           <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-            Welcome to User Management System
+            Bienvenido al Sistema de Gestión de Usuarios
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
-            This system provides complete CRUD operations for managing users, roles, and permissions.
+            Este sistema proporciona operaciones CRUD completas para gestionar usuarios, roles y permisos.
           </p>
           <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-400">
-            <li>Create, read, update, and delete users</li>
-            <li>Manage roles and assign them to users</li>
-            <li>Define permissions and associate them with roles</li>
-            <li>Dark/Light theme support</li>
-            <li>Secure authentication with JWT tokens</li>
+            <li>Crear, leer, actualizar y eliminar usuarios</li>
+            <li>Gestionar roles y asignarlos a usuarios</li>
+            <li>Definir permisos y asociarlos con roles</li>
+            <li>Soporte de tema oscuro/claro</li>
+            <li>Autenticación segura con tokens JWT</li>
           </ul>
         </div>
       </div>

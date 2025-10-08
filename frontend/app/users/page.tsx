@@ -39,7 +39,7 @@ export default function UsersPage() {
       setUsers(usersData)
       setRoles(rolesData)
     } catch (error) {
-      toast.error('Failed to fetch data')
+      toast.error('Error al cargar los datos')
     } finally {
       setLoading(false)
     }
@@ -73,14 +73,14 @@ export default function UsersPage() {
   }
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this user?')) return
+    if (!confirm('¿Estás seguro de que quieres eliminar este usuario?')) return
 
     try {
       await usersApi.delete(id)
-      toast.success('User deleted successfully')
+      toast.success('Usuario eliminado correctamente')
       fetchData()
     } catch (error) {
-      toast.error('Failed to delete user')
+      toast.error('Error al eliminar usuario')
     }
   }
 
@@ -90,15 +90,15 @@ export default function UsersPage() {
     try {
       if (editingUser) {
         await usersApi.update(editingUser.id, formData as UserUpdate)
-        toast.success('User updated successfully')
+        toast.success('Usuario actualizado correctamente')
       } else {
         await usersApi.create(formData as UserCreate)
-        toast.success('User created successfully')
+        toast.success('Usuario creado correctamente')
       }
       setShowModal(false)
       fetchData()
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Operation failed')
+      toast.error(error.response?.data?.detail || 'Operación fallida')
     }
   }
 
@@ -115,14 +115,14 @@ export default function UsersPage() {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-            Users Management
+            Gestión de Usuarios
           </h3>
           <button
             onClick={handleCreate}
             className="flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
           >
             <PlusIcon className="w-5 h-5 mr-2" />
-            Add User
+            Agregar Usuario
           </button>
         </div>
 
@@ -136,19 +136,19 @@ export default function UsersPage() {
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    User
+                    Usuario
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Email
+                    Correo
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                     Roles
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Status
+                    Estado
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Actions
+                    Acciones
                   </th>
                 </tr>
               </thead>
@@ -186,7 +186,7 @@ export default function UsersPage() {
                             : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
                         }`}
                       >
-                        {user.is_active ? 'Active' : 'Inactive'}
+                        {user.is_active ? 'Activo' : 'Inactivo'}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -216,7 +216,7 @@ export default function UsersPage() {
             <div className="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  {editingUser ? 'Edit User' : 'Create User'}
+                  {editingUser ? 'Editar Usuario' : 'Crear Usuario'}
                 </h3>
                 <button
                   onClick={() => setShowModal(false)}
@@ -230,7 +230,7 @@ export default function UsersPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Username *
+                      Nombre de Usuario *
                     </label>
                     <input
                       type="text"
@@ -243,7 +243,7 @@ export default function UsersPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Email *
+                      Correo Electrónico *
                     </label>
                     <input
                       type="email"
@@ -258,7 +258,7 @@ export default function UsersPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      First Name
+                      Nombre
                     </label>
                     <input
                       type="text"
@@ -270,7 +270,7 @@ export default function UsersPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Last Name
+                      Apellido
                     </label>
                     <input
                       type="text"
@@ -283,7 +283,7 @@ export default function UsersPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Password {!editingUser && '*'}
+                    Contraseña {!editingUser && '*'}
                   </label>
                   <input
                     type="password"
@@ -323,7 +323,7 @@ export default function UsersPage() {
                     className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                   />
                   <label className="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                    Active
+                    Activo
                   </label>
                 </div>
 
@@ -333,13 +333,13 @@ export default function UsersPage() {
                     onClick={() => setShowModal(false)}
                     className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
-                    Cancel
+                    Cancelar
                   </button>
                   <button
                     type="submit"
                     className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg"
                   >
-                    {editingUser ? 'Update' : 'Create'}
+                    {editingUser ? 'Actualizar' : 'Crear'}
                   </button>
                 </div>
               </form>

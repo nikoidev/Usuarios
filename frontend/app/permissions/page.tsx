@@ -32,7 +32,7 @@ export default function PermissionsPage() {
       const data = await permissionsApi.getAll()
       setPermissions(data)
     } catch (error) {
-      toast.error('Failed to fetch permissions')
+      toast.error('Error al cargar los permisos')
     } finally {
       setLoading(false)
     }
@@ -65,14 +65,14 @@ export default function PermissionsPage() {
   }
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this permission?')) return
+    if (!confirm('¿Estás seguro de que quieres eliminar este permiso?')) return
 
     try {
       await permissionsApi.delete(id)
-      toast.success('Permission deleted successfully')
+      toast.success('Permiso eliminado correctamente')
       fetchData()
     } catch (error) {
-      toast.error('Failed to delete permission')
+      toast.error('Error al eliminar permiso')
     }
   }
 
@@ -82,15 +82,15 @@ export default function PermissionsPage() {
     try {
       if (editingPermission) {
         await permissionsApi.update(editingPermission.id, formData as PermissionUpdate)
-        toast.success('Permission updated successfully')
+        toast.success('Permiso actualizado correctamente')
       } else {
         await permissionsApi.create(formData as PermissionCreate)
-        toast.success('Permission created successfully')
+        toast.success('Permiso creado correctamente')
       }
       setShowModal(false)
       fetchData()
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Operation failed')
+      toast.error(error.response?.data?.detail || 'Operación fallida')
     }
   }
 
@@ -99,14 +99,14 @@ export default function PermissionsPage() {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-            Permissions Management
+            Gestión de Permisos
           </h3>
           <button
             onClick={handleCreate}
             className="flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
           >
             <PlusIcon className="w-5 h-5 mr-2" />
-            Add Permission
+            Agregar Permiso
           </button>
         </div>
 
@@ -120,22 +120,22 @@ export default function PermissionsPage() {
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Name
+                    Nombre
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Code
+                    Código
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Resource
+                    Recurso
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Action
+                    Acción
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Status
+                    Estado
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Actions
+                    Acciones
                   </th>
                 </tr>
               </thead>
@@ -166,7 +166,7 @@ export default function PermissionsPage() {
                             : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
                         }`}
                       >
-                        {permission.is_active ? 'Active' : 'Inactive'}
+                        {permission.is_active ? 'Activo' : 'Inactivo'}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -196,7 +196,7 @@ export default function PermissionsPage() {
             <div className="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  {editingPermission ? 'Edit Permission' : 'Create Permission'}
+                  {editingPermission ? 'Editar Permiso' : 'Crear Permiso'}
                 </h3>
                 <button
                   onClick={() => setShowModal(false)}
@@ -209,7 +209,7 @@ export default function PermissionsPage() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Name *
+                    Nombre *
                   </label>
                   <input
                     type="text"
@@ -222,7 +222,7 @@ export default function PermissionsPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Code *
+                    Código *
                   </label>
                   <input
                     type="text"
@@ -230,13 +230,13 @@ export default function PermissionsPage() {
                     onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                     required
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    placeholder="e.g., user.create"
+                    placeholder="ej., user.create"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Description
+                    Descripción
                   </label>
                   <textarea
                     value={formData.description}
@@ -249,27 +249,27 @@ export default function PermissionsPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Resource
+                      Recurso
                     </label>
                     <input
                       type="text"
                       value={formData.resource}
                       onChange={(e) => setFormData({ ...formData, resource: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                      placeholder="e.g., users"
+                      placeholder="ej., users"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Action
+                      Acción
                     </label>
                     <input
                       type="text"
                       value={formData.action}
                       onChange={(e) => setFormData({ ...formData, action: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                      placeholder="e.g., create"
+                      placeholder="ej., create"
                     />
                   </div>
                 </div>
@@ -282,7 +282,7 @@ export default function PermissionsPage() {
                     className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                   />
                   <label className="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                    Active
+                    Activo
                   </label>
                 </div>
 
@@ -292,13 +292,13 @@ export default function PermissionsPage() {
                     onClick={() => setShowModal(false)}
                     className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
-                    Cancel
+                    Cancelar
                   </button>
                   <button
                     type="submit"
                     className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg"
                   >
-                    {editingPermission ? 'Update' : 'Create'}
+                    {editingPermission ? 'Actualizar' : 'Crear'}
                   </button>
                 </div>
               </form>

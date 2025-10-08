@@ -1,349 +1,227 @@
-# Sistema de Gestión de Usuarios
+# 🚀 Sistema de Gestión de Usuarios
 
-Sistema completo de gestión de usuarios con CRUD para Usuarios, Roles y Permisos. Construido con FastAPI, Next.js, TypeScript y PostgreSQL.
+Sistema completo de gestión de usuarios con autenticación JWT, control de roles y permisos. Desarrollado con **FastAPI**, **Next.js 14**, **TypeScript** y **PostgreSQL**.
 
-## 🚀 Características
+## ✨ Características
 
-- ✅ CRUD completo para Usuarios, Roles y Permisos
-- 🔐 Autenticación JWT
-- 🎨 Tema claro/oscuro
-- 📱 Diseño responsive y moderno
-- 🐳 Docker para PostgreSQL y pgAdmin
-- 🏗️ Arquitectura con mejores prácticas
-- 🔄 Relaciones many-to-many entre entidades
+- 🔐 **Autenticación JWT** segura
+- 👥 **CRUD completo de Usuarios**
+- 🛡️ **Gestión de Roles** con asignación flexible
+- 🔑 **Sistema de Permisos** granular
+- 🎨 **Tema Claro/Oscuro**
+- 📱 **Diseño Responsive** con Tailwind CSS
+- 🐳 **Docker** para PostgreSQL y pgAdmin
+- 🔥 **Hot Reload** en desarrollo
 
-## 📋 Requisitos Previos
+## 🛠️ Stack Tecnológico
 
-- Python 3.9+
+### Backend
+- **FastAPI** - Framework web moderno de Python
+- **SQLAlchemy** - ORM para PostgreSQL
+- **Pydantic** - Validación de datos
+- **JWT** - Autenticación basada en tokens
+- **Bcrypt** - Hash seguro de contraseñas
+- **Pipenv** - Gestión de dependencias
+
+### Frontend
+- **Next.js 14** - Framework de React
+- **TypeScript** - JavaScript tipado
+- **Tailwind CSS** - Estilos utility-first
+- **Axios** - Cliente HTTP
+- **React Context** - Gestión de estado
+- **Heroicons** - Iconos
+
+### Base de Datos
+- **PostgreSQL 15** - Base de datos relacional
+- **pgAdmin 4** - Interfaz de administración
+
+## 📋 Requisitos
+
+- Python 3.13+
 - Node.js 18+
 - Docker y Docker Compose
-- Pipenv (se instala con `pip install pipenv`)
+- Pipenv
 
-## 🛠️ Instalación y Configuración
+## 🚀 Instalación Rápida
 
-### 🚀 Inicio Rápido con F5
-
-Una vez instalado todo:
-
-1. **Presiona F5** en Cursor/VS Code
-2. **Selecciona**: "Full Stack (Production)"
-3. **Accede a**: http://localhost:3000
-
-Ver más detalles en [START_PRODUCTION.md](START_PRODUCTION.md)
-
----
-
-### 1. Clonar el Repositorio
-
+### 1. Clonar el repositorio
 ```bash
 git clone <repository-url>
 cd Usuarios
 ```
 
-### 2. Configurar Base de Datos (Docker)
-
+### 2. Configurar variables de entorno
 ```bash
-# Iniciar PostgreSQL y pgAdmin
+# Backend - Crear backend/.env
+DATABASE_URL=postgresql://postgres:postgres@localhost:5433/users_db
+SECRET_KEY=tu-clave-secreta-muy-segura-aqui
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+```
+
+### 3. Iniciar Docker
+```bash
 docker-compose up -d
-
-# Verificar que los contenedores estén corriendo
-docker ps
 ```
 
-**Acceso a pgAdmin:**
-- URL: http://localhost:5051
-- Email: admin@admin.com
-- Password: admin123
-
-**Configuración de conexión en pgAdmin:**
-- Host: usuarios_postgres
-- Port: 5432
-- Database: usuarios_db
-- Username: admin
-- Password: admin123
-
-### 3. Configurar Backend (FastAPI)
-
+### 4. Configurar Backend
 ```bash
-# Navegar al directorio backend
 cd backend
-
-# Instalar pipenv (si no lo tienes)
-pip install pipenv
-
-# Instalar dependencias y crear entorno virtual automáticamente
 pipenv install
-
-# Inicializar base de datos con datos de prueba
 pipenv run python init_db.py
-
-# Iniciar servidor
-pipenv run uvicorn app.main:app --reload
 ```
 
-El backend estará disponible en: http://localhost:8000
-
-**Documentación API:**
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
-
-### 4. Configurar Frontend (Next.js)
-
+### 5. Configurar Frontend
 ```bash
-# Abrir nueva terminal y navegar al directorio frontend
 cd frontend
-
-# Instalar dependencias
 npm install
-
-# Iniciar servidor de desarrollo
-npm run dev
+npm run build
 ```
 
-El frontend estará disponible en: http://localhost:3000
+### 6. Iniciar el Proyecto
 
-## 👤 Credenciales por Defecto
+**Opción 1: Con F5 (Recomendado)**
+- Presiona `F5` en VS Code/Cursor
+- Se iniciarán automáticamente backend y frontend
 
-**Usuario Administrador:**
-- Username: `admin`
-- Password: `admin123`
+**Opción 2: Manual**
+```bash
+# Terminal 1 - Backend
+cd backend
+pipenv run python run.py
+
+# Terminal 2 - Frontend
+cd frontend
+npm run start  # Producción
+# o
+npm run dev    # Desarrollo
+```
+
+## 🔑 Credenciales por Defecto
+
+**Administrador:**
+- Usuario: `admin`
+- Contraseña: `admin123`
 
 **Usuario Regular:**
-- Username: `user`
-- Password: `user123`
+- Usuario: `user`
+- Contraseña: `user123`
 
-## 📁 Estructura del Proyecto
+## 📂 Estructura del Proyecto
 
 ```
 Usuarios/
 ├── backend/
 │   ├── app/
-│   │   ├── api/
-│   │   │   ├── routes/
-│   │   │   │   ├── auth.py
-│   │   │   │   ├── users.py
-│   │   │   │   ├── roles.py
-│   │   │   │   └── permissions.py
-│   │   │   └── deps.py
-│   │   ├── core/
-│   │   │   ├── config.py
-│   │   │   ├── database.py
-│   │   │   └── security.py
-│   │   ├── models/
-│   │   │   ├── user.py
-│   │   │   ├── role.py
-│   │   │   ├── permission.py
-│   │   │   ├── user_role.py
-│   │   │   └── role_permission.py
-│   │   ├── schemas/
-│   │   │   ├── user.py
-│   │   │   ├── role.py
-│   │   │   ├── permission.py
-│   │   │   └── token.py
-│   │   ├── services/
-│   │   │   ├── user_service.py
-│   │   │   ├── role_service.py
-│   │   │   └── permission_service.py
-│   │   └── main.py
-│   ├── requirements.txt
-│   └── init_db.py
+│   │   ├── api/          # Endpoints de la API
+│   │   ├── core/         # Configuración y seguridad
+│   │   ├── models/       # Modelos SQLAlchemy
+│   │   ├── schemas/      # Esquemas Pydantic
+│   │   └── services/     # Lógica de negocio
+│   ├── init_db.py        # Script de inicialización
+│   ├── run.py            # Punto de entrada
+│   └── Pipfile           # Dependencias Python
 ├── frontend/
-│   ├── app/
-│   │   ├── dashboard/
-│   │   ├── users/
-│   │   ├── roles/
-│   │   ├── permissions/
-│   │   ├── login/
-│   │   ├── layout.tsx
-│   │   ├── page.tsx
-│   │   └── globals.css
-│   ├── components/
-│   │   ├── Layout.tsx
-│   │   └── ThemeToggle.tsx
-│   ├── contexts/
-│   │   ├── AuthContext.tsx
-│   │   └── ThemeContext.tsx
-│   ├── lib/
-│   │   ├── api/
-│   │   │   ├── auth.ts
-│   │   │   ├── users.ts
-│   │   │   ├── roles.ts
-│   │   │   └── permissions.ts
-│   │   └── axios.ts
-│   ├── types/
-│   │   └── index.ts
-│   ├── package.json
-│   └── tsconfig.json
-├── docker-compose.yml
+│   ├── app/              # Páginas Next.js 14
+│   ├── components/       # Componentes React
+│   ├── contexts/         # Context API
+│   ├── lib/              # Utilidades y API
+│   └── types/            # Tipos TypeScript
+├── docker-compose.yml    # Servicios Docker
 └── README.md
 ```
 
-## 🔧 Tecnologías Utilizadas
-
-### Backend
-- **FastAPI**: Framework web moderno y rápido
-- **SQLAlchemy**: ORM para Python
-- **PostgreSQL**: Base de datos relacional
-- **Pydantic**: Validación de datos
-- **JWT**: Autenticación con tokens
-- **Bcrypt**: Hash de contraseñas
-- **Pipenv**: Gestión de entornos virtuales y dependencias
-
-### Frontend
-- **Next.js 14**: Framework de React
-- **TypeScript**: Tipado estático
-- **Tailwind CSS**: Framework de CSS
-- **Axios**: Cliente HTTP
-- **React Hook Form**: Manejo de formularios
-- **React Hot Toast**: Notificaciones
-
-### DevOps
-- **Docker**: Contenedores
-- **Docker Compose**: Orquestación de contenedores
-
-## 🎨 Características del UI
-
-- **Tema Claro/Oscuro**: Toggle disponible en el menú lateral y barra superior
-- **Diseño Responsive**: Adaptable a diferentes tamaños de pantalla
-- **Tablas Interactivas**: Para visualización de datos
-- **Modales**: Para crear y editar entidades
-- **Notificaciones**: Feedback visual de operaciones
-- **Navegación Intuitiva**: Menú lateral con iconos
-
-## 🔐 Seguridad
-
-- Autenticación basada en JWT
-- Contraseñas hasheadas con bcrypt
-- Validación de datos en frontend y backend
-- Protección de rutas
-- CORS configurado
-
-## 📊 Modelo de Datos
-
-### Usuario
-- Email (único)
-- Username (único)
-- Password (hasheado)
-- Nombre y Apellido
-- Estado activo/inactivo
-- Relación many-to-many con Roles
-
-### Rol
-- Nombre (único)
-- Descripción
-- Estado activo/inactivo
-- Relación many-to-many con Usuarios y Permisos
-
-### Permiso
-- Nombre (único)
-- Código (único)
-- Descripción
-- Recurso (ej: users, roles)
-- Acción (ej: create, read, update, delete)
-- Estado activo/inactivo
-- Relación many-to-many con Roles
-
-## 🚀 Comandos Útiles
-
-### Backend
-
-```bash
-# Iniciar servidor
-pipenv run uvicorn app.main:app --reload
-
-# O usar el script run.py
-pipenv run python run.py
-
-# Inicializar base de datos
-pipenv run python init_db.py
-
-# Entrar al shell de pipenv
-pipenv shell
-
-# Crear migraciones (si usas Alembic)
-pipenv run alembic revision --autogenerate -m "mensaje"
-pipenv run alembic upgrade head
-```
-
-### Frontend
-
-```bash
-# Desarrollo
-npm run dev
-
-# Build de producción
-npm run build
-
-# Iniciar producción
-npm start
-
-# Linter
-npm run lint
-```
-
-### Docker
-
-```bash
-# Iniciar contenedores
-docker-compose up -d
-
-# Detener contenedores
-docker-compose down
-
-# Ver logs
-docker-compose logs -f
-
-# Reiniciar contenedores
-docker-compose restart
-```
-
-## 🔄 API Endpoints
+## 🌐 Endpoints de la API
 
 ### Autenticación
 - `POST /api/auth/login` - Iniciar sesión
 - `GET /api/auth/me` - Obtener usuario actual
 
 ### Usuarios
-- `GET /api/users/` - Listar usuarios
+- `GET /api/users` - Listar usuarios
+- `POST /api/users` - Crear usuario
 - `GET /api/users/{id}` - Obtener usuario
-- `POST /api/users/` - Crear usuario
 - `PUT /api/users/{id}` - Actualizar usuario
 - `DELETE /api/users/{id}` - Eliminar usuario
 
 ### Roles
-- `GET /api/roles/` - Listar roles
+- `GET /api/roles` - Listar roles
+- `POST /api/roles` - Crear rol
 - `GET /api/roles/{id}` - Obtener rol
-- `POST /api/roles/` - Crear rol
 - `PUT /api/roles/{id}` - Actualizar rol
 - `DELETE /api/roles/{id}` - Eliminar rol
 
 ### Permisos
-- `GET /api/permissions/` - Listar permisos
+- `GET /api/permissions` - Listar permisos
+- `POST /api/permissions` - Crear permiso
 - `GET /api/permissions/{id}` - Obtener permiso
-- `POST /api/permissions/` - Crear permiso
 - `PUT /api/permissions/{id}` - Actualizar permiso
 - `DELETE /api/permissions/{id}` - Eliminar permiso
 
+## 🐳 Servicios Docker
+
+- **PostgreSQL**: `localhost:5433`
+- **pgAdmin**: `http://localhost:5051`
+  - Email: `admin@admin.com`
+  - Contraseña: `admin`
+
+## 🔧 Scripts Disponibles
+
+### Backend
+```bash
+pipenv run python run.py          # Iniciar servidor
+pipenv run python init_db.py      # Inicializar base de datos
+pipenv install                    # Instalar dependencias
+pipenv shell                      # Activar entorno virtual
+```
+
+### Frontend
+```bash
+npm run dev      # Modo desarrollo
+npm run build    # Compilar para producción
+npm run start    # Servidor de producción
+npm run lint     # Ejecutar linter
+```
+
+## 📝 Desarrollo
+
+### Backend
+El backend usa FastAPI con estructura modular:
+- **Models**: Define las tablas de la base de datos
+- **Schemas**: Valida entrada/salida de datos
+- **Services**: Contiene la lógica de negocio
+- **Routes**: Define los endpoints de la API
+
+### Frontend
+El frontend usa Next.js 14 con App Router:
+- **Pages**: Rutas de la aplicación
+- **Components**: Componentes reutilizables
+- **Contexts**: Estado global (Auth, Theme)
+- **API Layer**: Integración con el backend
+
+## 🎨 Temas
+
+El sistema incluye soporte para tema claro y oscuro:
+- Se guarda la preferencia en localStorage
+- Cambio instantáneo sin recargar
+- Transiciones suaves
+
+## 🔒 Seguridad
+
+- Contraseñas hasheadas con Bcrypt
+- Tokens JWT con expiración
+- Validación de datos con Pydantic
+- CORS configurado
+- Variables de entorno para secretos
+
+## 📄 Licencia
+
+MIT License - Ver [LICENSE](LICENSE) para más detalles.
+
 ## 🤝 Contribuir
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+Ver [CONTRIBUTING.md](CONTRIBUTING.md) para guías de contribución.
 
-## 📝 Licencia
+---
 
-Este proyecto está bajo la Licencia MIT.
-
-## 👨‍💻 Autor
-
-Desarrollado como sistema base para múltiples proyectos.
-
-## 🐛 Reporte de Bugs
-
-Si encuentras algún bug, por favor abre un issue en el repositorio.
-
-## 📧 Contacto
-
-Para preguntas o sugerencias, contacta al equipo de desarrollo.
+Desarrollado con ❤️ usando FastAPI y Next.js

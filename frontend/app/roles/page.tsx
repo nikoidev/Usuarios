@@ -36,7 +36,7 @@ export default function RolesPage() {
       setRoles(rolesData)
       setPermissions(permissionsData)
     } catch (error) {
-      toast.error('Failed to fetch data')
+      toast.error('Error al cargar los datos')
     } finally {
       setLoading(false)
     }
@@ -65,14 +65,14 @@ export default function RolesPage() {
   }
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this role?')) return
+    if (!confirm('¿Estás seguro de que quieres eliminar este rol?')) return
 
     try {
       await rolesApi.delete(id)
-      toast.success('Role deleted successfully')
+      toast.success('Rol eliminado correctamente')
       fetchData()
     } catch (error) {
-      toast.error('Failed to delete role')
+      toast.error('Error al eliminar rol')
     }
   }
 
@@ -82,15 +82,15 @@ export default function RolesPage() {
     try {
       if (editingRole) {
         await rolesApi.update(editingRole.id, formData as RoleUpdate)
-        toast.success('Role updated successfully')
+        toast.success('Rol actualizado correctamente')
       } else {
         await rolesApi.create(formData as RoleCreate)
-        toast.success('Role created successfully')
+        toast.success('Rol creado correctamente')
       }
       setShowModal(false)
       fetchData()
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Operation failed')
+      toast.error(error.response?.data?.detail || 'Operación fallida')
     }
   }
 
@@ -107,14 +107,14 @@ export default function RolesPage() {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-            Roles Management
+            Gestión de Roles
           </h3>
           <button
             onClick={handleCreate}
             className="flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
           >
             <PlusIcon className="w-5 h-5 mr-2" />
-            Add Role
+            Agregar Rol
           </button>
         </div>
 
@@ -128,19 +128,19 @@ export default function RolesPage() {
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Name
+                    Nombre
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Description
+                    Descripción
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Permissions
+                    Permisos
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Status
+                    Estado
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Actions
+                    Acciones
                   </th>
                 </tr>
               </thead>
@@ -159,7 +159,7 @@ export default function RolesPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm text-gray-500 dark:text-gray-400">
-                        {role.permissions.length} permissions
+                        {role.permissions.length} permisos
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -170,7 +170,7 @@ export default function RolesPage() {
                             : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
                         }`}
                       >
-                        {role.is_active ? 'Active' : 'Inactive'}
+                        {role.is_active ? 'Activo' : 'Inactivo'}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -200,7 +200,7 @@ export default function RolesPage() {
             <div className="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  {editingRole ? 'Edit Role' : 'Create Role'}
+                  {editingRole ? 'Editar Rol' : 'Crear Rol'}
                 </h3>
                 <button
                   onClick={() => setShowModal(false)}
@@ -213,7 +213,7 @@ export default function RolesPage() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Name *
+                    Nombre *
                   </label>
                   <input
                     type="text"
@@ -226,7 +226,7 @@ export default function RolesPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Description
+                    Descripción
                   </label>
                   <textarea
                     value={formData.description}
@@ -238,7 +238,7 @@ export default function RolesPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Permissions
+                    Permisos
                   </label>
                   <div className="max-h-60 overflow-y-auto space-y-2 border border-gray-300 dark:border-gray-600 rounded-lg p-3">
                     {permissions.map((permission) => (
@@ -265,7 +265,7 @@ export default function RolesPage() {
                     className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                   />
                   <label className="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                    Active
+                    Activo
                   </label>
                 </div>
 
@@ -275,13 +275,13 @@ export default function RolesPage() {
                     onClick={() => setShowModal(false)}
                     className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
-                    Cancel
+                    Cancelar
                   </button>
                   <button
                     type="submit"
                     className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg"
                   >
-                    {editingRole ? 'Update' : 'Create'}
+                    {editingRole ? 'Actualizar' : 'Crear'}
                   </button>
                 </div>
               </form>
