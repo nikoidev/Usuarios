@@ -18,18 +18,18 @@ def init_db():
         
         # Create default permissions
         permissions_data = [
-            {"name": "Create User", "code": "user.create", "resource": "users", "action": "create"},
-            {"name": "Read User", "code": "user.read", "resource": "users", "action": "read"},
-            {"name": "Update User", "code": "user.update", "resource": "users", "action": "update"},
-            {"name": "Delete User", "code": "user.delete", "resource": "users", "action": "delete"},
-            {"name": "Create Role", "code": "role.create", "resource": "roles", "action": "create"},
-            {"name": "Read Role", "code": "role.read", "resource": "roles", "action": "read"},
-            {"name": "Update Role", "code": "role.update", "resource": "roles", "action": "update"},
-            {"name": "Delete Role", "code": "role.delete", "resource": "roles", "action": "delete"},
-            {"name": "Create Permission", "code": "permission.create", "resource": "permissions", "action": "create"},
-            {"name": "Read Permission", "code": "permission.read", "resource": "permissions", "action": "read"},
-            {"name": "Update Permission", "code": "permission.update", "resource": "permissions", "action": "update"},
-            {"name": "Delete Permission", "code": "permission.delete", "resource": "permissions", "action": "delete"},
+            {"name": "Crear Usuario", "code": "user.create", "resource": "users", "action": "create"},
+            {"name": "Leer Usuario", "code": "user.read", "resource": "users", "action": "read"},
+            {"name": "Actualizar Usuario", "code": "user.update", "resource": "users", "action": "update"},
+            {"name": "Eliminar Usuario", "code": "user.delete", "resource": "users", "action": "delete"},
+            {"name": "Crear Rol", "code": "role.create", "resource": "roles", "action": "create"},
+            {"name": "Leer Rol", "code": "role.read", "resource": "roles", "action": "read"},
+            {"name": "Actualizar Rol", "code": "role.update", "resource": "roles", "action": "update"},
+            {"name": "Eliminar Rol", "code": "role.delete", "resource": "roles", "action": "delete"},
+            {"name": "Crear Permiso", "code": "permission.create", "resource": "permissions", "action": "create"},
+            {"name": "Leer Permiso", "code": "permission.read", "resource": "permissions", "action": "read"},
+            {"name": "Actualizar Permiso", "code": "permission.update", "resource": "permissions", "action": "update"},
+            {"name": "Eliminar Permiso", "code": "permission.delete", "resource": "permissions", "action": "delete"},
         ]
         
         permissions = []
@@ -42,8 +42,8 @@ def init_db():
         
         # Create admin role with all permissions
         admin_role = Role(
-            name="Admin",
-            description="Administrator with full access",
+            name="Administrador",
+            description="Administrador con acceso completo",
             permissions=permissions
         )
         db.add(admin_role)
@@ -51,8 +51,8 @@ def init_db():
         # Create user role with read permissions
         user_permissions = [p for p in permissions if p.action == "read"]
         user_role = Role(
-            name="User",
-            description="Regular user with read access",
+            name="Usuario",
+            description="Usuario regular con acceso de lectura",
             permissions=user_permissions
         )
         db.add(user_role)
