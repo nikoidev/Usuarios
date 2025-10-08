@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .core.database import engine, Base
-from .api.routes import auth, users, roles, permissions
+from .api.routes import auth, users, roles, permissions, email_config
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -26,6 +26,7 @@ app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(users.router, prefix="/api/users", tags=["Users"])
 app.include_router(roles.router, prefix="/api/roles", tags=["Roles"])
 app.include_router(permissions.router, prefix="/api/permissions", tags=["Permissions"])
+app.include_router(email_config.router, prefix="/api/email-config", tags=["Email Configuration"])
 
 
 @app.get("/")

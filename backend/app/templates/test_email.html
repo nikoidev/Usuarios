@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Email de Prueba - Sistema de Gestión de Usuarios{% endblock %}
+
+{% block header_title %}✅ Configuración de Email Correcta{% endblock %}
+
+{% block content %}
+<h2>¡Felicidades!</h2>
+
+<p>Este es un email de prueba del Sistema de Gestión de Usuarios.</p>
+
+<div class="alert alert-info">
+    <strong>✅ La configuración de correo electrónico está funcionando correctamente.</strong>
+</div>
+
+<p>Detalles de la configuración:</p>
+<ul>
+    <li><strong>Proveedor:</strong> {{ provider }}</li>
+    <li><strong>Remitente:</strong> {{ sender_email }}</li>
+    <li><strong>Nombre del remitente:</strong> {{ sender_name }}</li>
+</ul>
+
+<p>Ya puedes utilizar el sistema de notificaciones por correo electrónico para:</p>
+<ul>
+    <li>Recuperación de contraseñas</li>
+    <li>Notificaciones de cambios de contraseña</li>
+    <li>Bienvenida a nuevos usuarios</li>
+    <li>Alertas de seguridad</li>
+</ul>
+
+<p>Saludos,<br>El equipo de Sistema de Gestión de Usuarios</p>
+{% endblock %}
+

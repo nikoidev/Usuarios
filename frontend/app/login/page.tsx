@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 import SafeThemeToggle from '@/components/SafeThemeToggle'
 import toast from 'react-hot-toast'
@@ -82,6 +83,24 @@ export default function LoginPage() {
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="Ingresa tu contraseña"
               />
+            </div>
+
+            <div className="flex items-center justify-between mb-4">
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                />
+                <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
+                  Recordarme
+                </span>
+              </label>
+              <Link
+                href="/auth/forgot-password"
+                className="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+              >
+                ¿Olvidaste tu contraseña?
+              </Link>
             </div>
 
             <button
