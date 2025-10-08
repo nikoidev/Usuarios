@@ -11,6 +11,8 @@ import {
   ShieldCheckIcon,
   KeyIcon,
   ArrowRightOnRectangleIcon,
+  Cog6ToothIcon,
+  LockClosedIcon,
 } from '@heroicons/react/24/outline'
 
 interface LayoutProps {
@@ -32,6 +34,7 @@ export default function Layout({ children }: LayoutProps) {
     { name: 'Usuarios', href: '/users', icon: UsersIcon },
     { name: 'Roles', href: '/roles', icon: ShieldCheckIcon },
     { name: 'Permisos', href: '/permissions', icon: KeyIcon },
+    ...(user?.is_superuser ? [{ name: 'Configuración', href: '/settings/email', icon: Cog6ToothIcon }] : []),
   ]
 
   return (
@@ -80,6 +83,13 @@ export default function Layout({ children }: LayoutProps) {
               </div>
               <ThemeToggle />
             </div>
+            <Link
+              href="/profile/change-password"
+              className="flex items-center w-full px-4 py-2 mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            >
+              <LockClosedIcon className="w-5 h-5 mr-3" />
+              Cambiar Contraseña
+            </Link>
             <button
               onClick={handleLogout}
               className="flex items-center w-full px-4 py-2 text-sm font-medium text-red-700 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
