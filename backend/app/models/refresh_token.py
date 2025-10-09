@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
 import secrets
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 
 class RefreshToken(Base):
@@ -27,11 +27,11 @@ class RefreshToken(Base):
     @staticmethod
     def get_expiration_time(days=7):
         """Get expiration time (default 7 days)"""
-        return datetime.utcnow() + timedelta(days=days)
+        return datetime.now(timezone.utc) + timedelta(days=days)
 
     def is_expired(self):
         """Check if token is expired"""
-        return datetime.utcnow() > self.expires_at
+        return datetime.now(timezone.utc) > self.expires_at
 
     def is_valid(self):
         """Check if token is valid (not expired and not revoked)"""
