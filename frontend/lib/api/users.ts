@@ -1,9 +1,19 @@
 import axiosInstance from '../axios'
-import { User, UserCreate, UserUpdate } from '@/types'
+import { User, UserCreate, UserUpdate, PaginatedResponse } from '@/types'
+
+export interface GetUsersParams {
+  page?: number
+  limit?: number
+  search?: string
+  role_id?: number
+  is_active?: boolean
+  order_by?: string
+  order_desc?: boolean
+}
 
 export const usersApi = {
-  getAll: async (): Promise<User[]> => {
-    const response = await axiosInstance.get('/api/users/')
+  getAll: async (params: GetUsersParams = {}): Promise<PaginatedResponse<User>> => {
+    const response = await axiosInstance.get('/api/users/', { params })
     return response.data
   },
 

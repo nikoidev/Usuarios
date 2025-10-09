@@ -1,9 +1,20 @@
 import axiosInstance from '../axios'
-import { Permission, PermissionCreate, PermissionUpdate } from '@/types'
+import { Permission, PermissionCreate, PermissionUpdate, PaginatedResponse } from '@/types'
+
+export interface GetPermissionsParams {
+  page?: number
+  limit?: number
+  search?: string
+  resource?: string
+  action?: string
+  is_active?: boolean
+  order_by?: string
+  order_desc?: boolean
+}
 
 export const permissionsApi = {
-  getAll: async (): Promise<Permission[]> => {
-    const response = await axiosInstance.get('/api/permissions/')
+  getAll: async (params: GetPermissionsParams = {}): Promise<PaginatedResponse<Permission>> => {
+    const response = await axiosInstance.get('/api/permissions/', { params })
     return response.data
   },
 

@@ -1,23 +1,40 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 from ...core.database import get_db
-from ...schemas.permission import PermissionCreate, PermissionUpdate, PermissionResponse
+from ...schemas.permission import PermissionCreate, PermissionUpdate, PermissionResponse, PermissionListResponse
 from ...services.permission_service import PermissionService
 from ..deps import get_current_active_user
 
 router = APIRouter()
 
 
-@router.get("/", response_model=List[PermissionResponse])
+@router.get("/", response_model=PermissionListResponse)
 def read_permissions(
-    skip: int = 0,
-    limit: int = 100,
+    page: int = Query(1, ge=1, description="Page number"),
+    limit: int = Query(10, ge=1, le=100, description="Items per page"),
+    search: Optional[str] = Query(None, description="Search by name, code, or description"),
+    resource: Optional[str] = Query(None, description="Filter by resource"),
+    action: Optional[str] = Query(None, description="Filter by action"),
+    is_active: Optional[bool] = Query(None, description="Filter by active status"),
+    order_by: str = Query("id", description="Field to order by"),
+    order_desc: bool = Query(False, description="Order descending"),
     db: Session = Depends(get_db),
     current_user = Depends(get_current_active_user)
 ):
-    permissions = PermissionService.get_permissions(db, skip=skip, limit=limit)
-    return permissions
+    skip = (page - 1) * limit
+    result = PermissionService.get_permissions(
+        db, 
+        skip=skip, 
+        limit=limit,
+        search=search,
+        resource=resource,
+        action=action,
+        is_active=is_active,
+        order_by=order_by,
+        order_desc=order_desc
+    )
+    return result
 
 
 @router.get("/{permission_id}", response_model=PermissionResponse)
@@ -38,10 +55,10 @@ def create_permission(
     db: Session = Depends(get_db),
     current_user = Depends(get_current_active_user)
 ):
-    # Check if permission already exists
+    # Check if permission code already exists
     db_permission = PermissionService.get_permission_by_code(db, code=permission.code)
     if db_permission:
-        raise HTTPException(status_code=400, detail="Permission code already exists")
+        raise HTTPException(status_code=400, detail="Permission code already registered")
     
     return PermissionService.create_permission(db=db, permission=permission)
 

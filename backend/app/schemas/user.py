@@ -49,3 +49,12 @@ class UserResponse(UserBase):
 
     class Config:
         from_attributes = True
+
+
+class UserListResponse(BaseModel):
+    """Paginated response for user list"""
+    items: List[UserResponse]
+    total: int
+    page: int
+    pages: int
+    limit: int

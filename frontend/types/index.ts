@@ -84,3 +84,17 @@ export interface PermissionUpdate {
   action?: string
   is_active?: boolean
 }
+
+export interface PaginatedResponse<T> {
+  items: T[]
+  total: number
+  page: number
+  pages: number
+  limit: number
+}
+
+export interface Token {
+  access_token: string
+  token_type: string
+  refresh_token?: string
+}
