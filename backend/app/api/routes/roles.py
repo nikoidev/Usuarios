@@ -1,23 +1,36 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 from ...core.database import get_db
-from ...schemas.role import RoleCreate, RoleUpdate, RoleResponse
+from ...schemas.role import RoleCreate, RoleUpdate, RoleResponse, RoleListResponse
 from ...services.role_service import RoleService
 from ..deps import get_current_active_user
 
 router = APIRouter()
 
 
-@router.get("/", response_model=List[RoleResponse])
+@router.get("/", response_model=RoleListResponse)
 def read_roles(
-    skip: int = 0,
-    limit: int = 100,
+    page: int = Query(1, ge=1, description="Page number"),
+    limit: int = Query(10, ge=1, le=100, description="Items per page"),
+    search: Optional[str] = Query(None, description="Search by name or description"),
+    is_active: Optional[bool] = Query(None, description="Filter by active status"),
+    order_by: str = Query("id", description="Field to order by"),
+    order_desc: bool = Query(False, description="Order descending"),
     db: Session = Depends(get_db),
     current_user = Depends(get_current_active_user)
 ):
-    roles = RoleService.get_roles(db, skip=skip, limit=limit)
-    return roles
+    skip = (page - 1) * limit
+    result = RoleService.get_roles(
+        db, 
+        skip=skip, 
+        limit=limit,
+        search=search,
+        is_active=is_active,
+        order_by=order_by,
+        order_desc=order_desc
+    )
+    return result
 
 
 @router.get("/{role_id}", response_model=RoleResponse)
@@ -41,7 +54,7 @@ def create_role(
     # Check if role already exists
     db_role = RoleService.get_role_by_name(db, name=role.name)
     if db_role:
-        raise HTTPException(status_code=400, detail="Role name already exists")
+        raise HTTPException(status_code=400, detail="Role name already registered")
     
     return RoleService.create_role(db=db, role=role)
 

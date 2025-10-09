@@ -29,8 +29,8 @@ export default function PermissionsPage() {
 
   const fetchData = async () => {
     try {
-      const data = await permissionsApi.getAll()
-      setPermissions(data)
+      const data = await permissionsApi.getAll({ limit: 100 })
+      setPermissions(data.items)
     } catch (error) {
       toast.error('Error al cargar los permisos')
     } finally {

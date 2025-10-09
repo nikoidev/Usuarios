@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 
@@ -32,3 +32,12 @@ class PermissionResponse(PermissionBase):
 
     class Config:
         from_attributes = True
+
+
+class PermissionListResponse(BaseModel):
+    """Paginated response for permission list"""
+    items: List[PermissionResponse]
+    total: int
+    page: int
+    pages: int
+    limit: int

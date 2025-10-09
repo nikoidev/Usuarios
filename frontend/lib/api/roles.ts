@@ -1,9 +1,18 @@
 import axiosInstance from '../axios'
-import { Role, RoleCreate, RoleUpdate } from '@/types'
+import { Role, RoleCreate, RoleUpdate, PaginatedResponse } from '@/types'
+
+export interface GetRolesParams {
+  page?: number
+  limit?: number
+  search?: string
+  is_active?: boolean
+  order_by?: string
+  order_desc?: boolean
+}
 
 export const rolesApi = {
-  getAll: async (): Promise<Role[]> => {
-    const response = await axiosInstance.get('/api/roles/')
+  getAll: async (params: GetRolesParams = {}): Promise<PaginatedResponse<Role>> => {
+    const response = await axiosInstance.get('/api/roles/', { params })
     return response.data
   },
 

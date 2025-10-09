@@ -1,23 +1,38 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 from ...core.database import get_db
-from ...schemas.user import UserCreate, UserUpdate, UserResponse
+from ...schemas.user import UserCreate, UserUpdate, UserResponse, UserListResponse
 from ...services.user_service import UserService
 from ..deps import get_current_active_user
 
 router = APIRouter()
 
 
-@router.get("/", response_model=List[UserResponse])
+@router.get("/", response_model=UserListResponse)
 def read_users(
-    skip: int = 0,
-    limit: int = 100,
+    page: int = Query(1, ge=1, description="Page number"),
+    limit: int = Query(10, ge=1, le=100, description="Items per page"),
+    search: Optional[str] = Query(None, description="Search by username, email, first_name, or last_name"),
+    role_id: Optional[int] = Query(None, description="Filter by role ID"),
+    is_active: Optional[bool] = Query(None, description="Filter by active status"),
+    order_by: str = Query("id", description="Field to order by (id, username, email, created_at)"),
+    order_desc: bool = Query(False, description="Order descending"),
     db: Session = Depends(get_db),
     current_user = Depends(get_current_active_user)
 ):
-    users = UserService.get_users(db, skip=skip, limit=limit)
-    return users
+    skip = (page - 1) * limit
+    result = UserService.get_users(
+        db, 
+        skip=skip, 
+        limit=limit,
+        search=search,
+        role_id=role_id,
+        is_active=is_active,
+        order_by=order_by,
+        order_desc=order_desc
+    )
+    return result
 
 
 @router.get("/{user_id}", response_model=UserResponse)

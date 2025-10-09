@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from sqlalchemy import or_, func
+from typing import List, Optional, Dict, Any
 from ..models.user import User
 from ..models.role import Role
 from ..schemas.user import UserCreate, UserUpdate
@@ -20,8 +21,66 @@ class UserService:
         return db.query(User).filter(User.username == username).first()
 
     @staticmethod
-    def get_users(db: Session, skip: int = 0, limit: int = 100) -> List[User]:
-        return db.query(User).offset(skip).limit(limit).all()
+    def get_users(
+        db: Session, 
+        skip: int = 0, 
+        limit: int = 100,
+        search: Optional[str] = None,
+        role_id: Optional[int] = None,
+        is_active: Optional[bool] = None,
+        order_by: str = "id",
+        order_desc: bool = False
+    ) -> Dict[str, Any]:
+        """
+        Get users with pagination, search, filters, and sorting
+        Returns: {items: List[User], total: int, page: int, pages: int}
+        """
+        query = db.query(User)
+        
+        # Search by username, email, first_name, or last_name
+        if search:
+            search_filter = f"%{search}%"
+            query = query.filter(
+                or_(
+                    User.username.ilike(search_filter),
+                    User.email.ilike(search_filter),
+                    User.first_name.ilike(search_filter),
+                    User.last_name.ilike(search_filter)
+                )
+            )
+        
+        # Filter by role
+        if role_id:
+            query = query.join(User.roles).filter(Role.id == role_id)
+        
+        # Filter by active status
+        if is_active is not None:
+            query = query.filter(User.is_active == is_active)
+        
+        # Get total count before pagination
+        total = query.count()
+        
+        # Sorting
+        order_column = getattr(User, order_by, User.id)
+        if order_desc:
+            query = query.order_by(order_column.desc())
+        else:
+            query = query.order_by(order_column.asc())
+        
+        # Pagination
+        items = query.offset(skip).limit(limit).all()
+        
+        # Calculate pagination info
+        page = (skip // limit) + 1 if limit > 0 else 1
+        pages = (total + limit - 1) // limit if limit > 0 else 1
+        
+        return {
+            "items": items,
+            "total": total,
+            "page": page,
+            "pages": pages,
+            "limit": limit
+        }
 
     @staticmethod
     def create_user(db: Session, user: UserCreate) -> User:

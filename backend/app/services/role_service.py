@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from sqlalchemy import or_
+from typing import List, Optional, Dict, Any
 from ..models.role import Role
 from ..models.permission import Permission
 from ..schemas.role import RoleCreate, RoleUpdate
@@ -15,8 +16,55 @@ class RoleService:
         return db.query(Role).filter(Role.name == name).first()
 
     @staticmethod
-    def get_roles(db: Session, skip: int = 0, limit: int = 100) -> List[Role]:
-        return db.query(Role).offset(skip).limit(limit).all()
+    def get_roles(
+        db: Session, 
+        skip: int = 0, 
+        limit: int = 100,
+        search: Optional[str] = None,
+        is_active: Optional[bool] = None,
+        order_by: str = "id",
+        order_desc: bool = False
+    ) -> Dict[str, Any]:
+        """Get roles with pagination, search, filters, and sorting"""
+        query = db.query(Role)
+        
+        # Search by name or description
+        if search:
+            search_filter = f"%{search}%"
+            query = query.filter(
+                or_(
+                    Role.name.ilike(search_filter),
+                    Role.description.ilike(search_filter)
+                )
+            )
+        
+        # Filter by active status
+        if is_active is not None:
+            query = query.filter(Role.is_active == is_active)
+        
+        # Get total count
+        total = query.count()
+        
+        # Sorting
+        order_column = getattr(Role, order_by, Role.id)
+        if order_desc:
+            query = query.order_by(order_column.desc())
+        else:
+            query = query.order_by(order_column.asc())
+        
+        # Pagination
+        items = query.offset(skip).limit(limit).all()
+        
+        page = (skip // limit) + 1 if limit > 0 else 1
+        pages = (total + limit - 1) // limit if limit > 0 else 1
+        
+        return {
+            "items": items,
+            "total": total,
+            "page": page,
+            "pages": pages,
+            "limit": limit
+        }
 
     @staticmethod
     def create_role(db: Session, role: RoleCreate) -> Role:

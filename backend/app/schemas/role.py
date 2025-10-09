@@ -39,3 +39,12 @@ class RoleResponse(RoleBase):
 
     class Config:
         from_attributes = True
+
+
+class RoleListResponse(BaseModel):
+    """Paginated response for role list"""
+    items: List[RoleResponse]
+    total: int
+    page: int
+    pages: int
+    limit: int

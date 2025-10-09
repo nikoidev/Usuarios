@@ -21,14 +21,14 @@ export default function DashboardPage() {
     const fetchStats = async () => {
       try {
         const [users, roles, permissions] = await Promise.all([
-          usersApi.getAll(),
-          rolesApi.getAll(),
-          permissionsApi.getAll(),
+          usersApi.getAll({ limit: 1 }),
+          rolesApi.getAll({ limit: 1 }),
+          permissionsApi.getAll({ limit: 1 }),
         ])
         setStats({
-          users: users.length,
-          roles: roles.length,
-          permissions: permissions.length,
+          users: users.total,
+          roles: roles.total,
+          permissions: permissions.total,
         })
       } catch (error) {
         console.error('Failed to fetch stats:', error)
