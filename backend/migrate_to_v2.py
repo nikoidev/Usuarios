@@ -9,8 +9,8 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from sqlalchemy import text
-from app.core.database import engine, SessionLocal
-from app.models import Base
+from app.core.database import engine, SessionLocal, Base
+from app.models import AuditLog
 
 def migrate():
     """Run database migrations"""
@@ -33,23 +33,23 @@ def migrate():
             try:
                 db.execute(text(migration))
                 db.commit()
-                print(f"✓ Executed: {migration[:50]}...")
+                print(f"[OK] Executed: {migration[:50]}...")
             except Exception as e:
-                print(f"✗ Error or already exists: {migration[:50]}...")
+                print(f"[SKIP] Error or already exists: {migration[:50]}...")
                 db.rollback()
         
         # Create audit_logs table using SQLAlchemy
         print("\nCreating audit_logs table...")
         Base.metadata.create_all(bind=engine, tables=[Base.metadata.tables.get('audit_logs')])
-        print("✓ audit_logs table created")
+        print("[OK] audit_logs table created")
         
-        print("\n✅ Migration completed successfully!")
+        print("\n[SUCCESS] Migration completed successfully!")
         print("\nNew features available:")
         print("  - User profile fields (phone, avatar, bio, timezone, language)")
         print("  - Audit log system")
         
     except Exception as e:
-        print(f"\n❌ Migration failed: {e}")
+        print(f"\n[ERROR] Migration failed: {e}")
         db.rollback()
         raise
     finally:
