@@ -6,6 +6,11 @@ export interface User {
   last_name?: string
   is_active: boolean
   is_superuser: boolean
+  phone?: string
+  avatar_url?: string
+  bio?: string
+  timezone?: string
+  language?: string
   created_at: string
   updated_at?: string
   roles: Role[]
@@ -97,4 +102,28 @@ export interface Token {
   access_token: string
   token_type: string
   refresh_token?: string
+}
+
+export interface AuditLog {
+  id: number
+  user_id?: number
+  action: string
+  resource: string
+  resource_id?: number
+  details?: any
+  ip_address?: string
+  user_agent?: string
+  created_at: string
+  user_username?: string
+  user_email?: string
+}
+
+export interface ProfileUpdate {
+  first_name?: string
+  last_name?: string
+  phone?: string
+  avatar_url?: string
+  bio?: string
+  timezone?: string
+  language?: string
 }

@@ -9,6 +9,11 @@ class UserBase(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     is_active: Optional[bool] = True
+    phone: Optional[str] = None
+    avatar_url: Optional[str] = None
+    bio: Optional[str] = None
+    timezone: Optional[str] = 'America/Mexico_City'
+    language: Optional[str] = 'es'
 
 
 class UserCreate(UserBase):
@@ -24,6 +29,22 @@ class UserUpdate(BaseModel):
     is_active: Optional[bool] = None
     password: Optional[str] = None
     role_ids: Optional[List[int]] = None
+    phone: Optional[str] = None
+    avatar_url: Optional[str] = None
+    bio: Optional[str] = None
+    timezone: Optional[str] = None
+    language: Optional[str] = None
+
+
+class ProfileUpdate(BaseModel):
+    """Schema for users updating their own profile"""
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    phone: Optional[str] = None
+    avatar_url: Optional[str] = None
+    bio: Optional[str] = None
+    timezone: Optional[str] = None
+    language: Optional[str] = None
 
 
 class UserLogin(BaseModel):
