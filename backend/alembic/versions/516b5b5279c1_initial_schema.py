@@ -36,7 +36,9 @@ def upgrade() -> None:
         sa.Column("bio", sa.Text(), nullable=True),
         sa.Column("timezone", sa.String(length=50), nullable=True),
         sa.Column("language", sa.String(length=10), nullable=True),
-        sa.Column("created_at", sa.DateTime(), nullable=False),
+        sa.Column(
+            "created_at", sa.DateTime(), nullable=False, server_default=sa.func.now()
+        ),
         sa.Column("updated_at", sa.DateTime(), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -49,7 +51,9 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("name", sa.String(length=100), nullable=False),
         sa.Column("description", sa.Text(), nullable=True),
-        sa.Column("created_at", sa.DateTime(), nullable=False),
+        sa.Column(
+            "created_at", sa.DateTime(), nullable=False, server_default=sa.func.now()
+        ),
         sa.Column("updated_at", sa.DateTime(), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -64,7 +68,10 @@ def upgrade() -> None:
         sa.Column("resource", sa.String(length=100), nullable=False),
         sa.Column("action", sa.String(length=50), nullable=False),
         sa.Column("description", sa.Text(), nullable=True),
-        sa.Column("created_at", sa.DateTime(), nullable=False),
+        sa.Column("is_active", sa.Boolean(), nullable=False, server_default="true"),
+        sa.Column(
+            "created_at", sa.DateTime(), nullable=False, server_default=sa.func.now()
+        ),
         sa.Column("updated_at", sa.DateTime(), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -106,7 +113,9 @@ def upgrade() -> None:
         sa.Column("details", sa.JSON(), nullable=True),
         sa.Column("ip_address", sa.String(length=45), nullable=True),
         sa.Column("user_agent", sa.String(length=500), nullable=True),
-        sa.Column("created_at", sa.DateTime(), nullable=False),
+        sa.Column(
+            "created_at", sa.DateTime(), nullable=False, server_default=sa.func.now()
+        ),
         sa.ForeignKeyConstraint(["user_id"], ["users.id"], ondelete="SET NULL"),
         sa.PrimaryKeyConstraint("id"),
     )
