@@ -14,14 +14,7 @@ from app.core.config import settings  # noqa: E402
 from app.core.database import Base  # noqa: E402
 
 # Import all models to ensure they're registered with Base.metadata
-from app.models import (  # noqa: E402
-    AuditLog,
-    Permission,
-    Role,
-    User,
-    role_permissions,
-    user_roles,
-)
+from app.models import AuditLog, Permission, Role, User, role_permissions, user_roles  # noqa: E402
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
