@@ -1,10 +1,15 @@
 # 🚀 Sistema de Gestión de Usuarios - Base Universal
 
+[![CI Tests](https://github.com/nikoidev/Usuarios/workflows/CI%20-%20Tests%20%26%20Coverage/badge.svg)](https://github.com/nikoidev/Usuarios/actions/workflows/ci-tests.yml)
+[![Code Quality](https://github.com/nikoidev/Usuarios/workflows/CI%20-%20Code%20Quality/badge.svg)](https://github.com/nikoidev/Usuarios/actions/workflows/ci-quality.yml)
+[![Security](https://github.com/nikoidev/Usuarios/workflows/CI%20-%20Security%20Scan/badge.svg)](https://github.com/nikoidev/Usuarios/actions/workflows/ci-security.yml)
+[![Coverage](https://img.shields.io/badge/coverage-86%25-brightgreen.svg)](https://github.com/nikoidev/Usuarios)
 [![FastAPI](https://img.shields.io/badge/FastAPI-2.0.0-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Next.js-14.2.33-black.svg?logo=next.js)](https://nextjs.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-316192.svg?logo=postgresql)](https://www.postgresql.org)
-[![Python](https://img.shields.io/badge/Python-3.13-3776AB.svg?logo=python)](https://www.python.org)
+[![Python](https://img.shields.io/badge/Python-3.12-3776AB.svg?logo=python)](https://www.python.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6.svg?logo=typescript)](https://www.typescriptlang.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > **Base sólida y profesional para cualquier proyecto que necesite gestión de usuarios, roles y permisos.** Sistema completo y listo para producción que sirve como fundamento para proyectos de gestión empresarial, e-commerce, sistemas médicos, almacenes, producción y más.
 
