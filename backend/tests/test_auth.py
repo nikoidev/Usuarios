@@ -26,7 +26,8 @@ class TestLogin:
     def test_login_invalid_username(self, client: TestClient):
         """Test login with invalid username."""
         response = client.post(
-            "/api/auth/login", data={"username": "nonexistent", "password": "password123"}
+            "/api/auth/login",
+            data={"username": "nonexistent", "password": "password123"},
         )
 
         assert response.status_code == 401
@@ -35,13 +36,16 @@ class TestLogin:
     def test_login_invalid_password(self, client: TestClient, test_admin_user: User):
         """Test login with invalid password."""
         response = client.post(
-            "/api/auth/login", data={"username": "testadmin", "password": "wrongpassword"}
+            "/api/auth/login",
+            data={"username": "testadmin", "password": "wrongpassword"},
         )
 
         assert response.status_code == 401
         assert "Incorrect username or password" in response.json()["detail"]
 
-    def test_login_inactive_user(self, client: TestClient, db: Session, test_admin_user: User):
+    def test_login_inactive_user(
+        self, client: TestClient, db: Session, test_admin_user: User
+    ):
         """Test login with inactive user."""
         # Skip this test as inactive user validation might not be implemented
         pytest.skip("Inactive user validation not implemented in login endpoint")
@@ -61,7 +65,9 @@ class TestRefreshToken:
         refresh_token = login_response.json()["refresh_token"]
 
         # Refresh token
-        response = client.post("/api/auth/refresh", json={"refresh_token": refresh_token})
+        response = client.post(
+            "/api/auth/refresh", json={"refresh_token": refresh_token}
+        )
 
         assert response.status_code == 200
         data = response.json()
@@ -70,7 +76,9 @@ class TestRefreshToken:
 
     def test_refresh_token_invalid(self, client: TestClient):
         """Test refresh with invalid token."""
-        response = client.post("/api/auth/refresh", json={"refresh_token": "invalid_token"})
+        response = client.post(
+            "/api/auth/refresh", json={"refresh_token": "invalid_token"}
+        )
 
         assert response.status_code == 401
 
@@ -99,7 +107,9 @@ class TestGetCurrentUser:
 
     def test_get_me_invalid_token(self, client: TestClient):
         """Test getting current user with invalid token."""
-        response = client.get("/api/auth/me", headers={"Authorization": "Bearer invalid_token"})
+        response = client.get(
+            "/api/auth/me", headers={"Authorization": "Bearer invalid_token"}
+        )
 
         assert response.status_code == 401
 
@@ -122,16 +132,22 @@ class TestChangePassword:
 
         # Test login with new password
         login_response = client.post(
-            "/api/auth/login", data={"username": "testadmin", "password": "newpassword123"}
+            "/api/auth/login",
+            data={"username": "testadmin", "password": "newpassword123"},
         )
         assert login_response.status_code == 200
 
-    def test_change_password_wrong_current(self, client: TestClient, admin_headers: dict):
+    def test_change_password_wrong_current(
+        self, client: TestClient, admin_headers: dict
+    ):
         """Test password change with wrong current password."""
         response = client.post(
             "/api/auth/change-password",
             headers=admin_headers,
-            json={"current_password": "wrongpassword", "new_password": "newpassword123"},
+            json={
+                "current_password": "wrongpassword",
+                "new_password": "newpassword123",
+            },
         )
 
         assert response.status_code == 400

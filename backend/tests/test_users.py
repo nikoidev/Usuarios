@@ -57,9 +57,13 @@ class TestGetUsers:
 class TestGetUser:
     """Test getting single user."""
 
-    def test_get_user_by_id(self, client: TestClient, admin_headers: dict, test_regular_user: User):
+    def test_get_user_by_id(
+        self, client: TestClient, admin_headers: dict, test_regular_user: User
+    ):
         """Test getting user by ID."""
-        response = client.get(f"/api/users/{test_regular_user.id}", headers=admin_headers)
+        response = client.get(
+            f"/api/users/{test_regular_user.id}", headers=admin_headers
+        )
 
         assert response.status_code == 200
         data = response.json()
@@ -157,10 +161,16 @@ class TestUpdateUser:
         self, client: TestClient, admin_headers: dict, test_regular_user: User
     ):
         """Test updating user information."""
-        update_data = {"first_name": "Updated", "last_name": "Name", "phone": "+1234567890"}
+        update_data = {
+            "first_name": "Updated",
+            "last_name": "Name",
+            "phone": "+1234567890",
+        }
 
         response = client.put(
-            f"/api/users/{test_regular_user.id}", headers=admin_headers, json=update_data
+            f"/api/users/{test_regular_user.id}",
+            headers=admin_headers,
+            json=update_data,
         )
 
         assert response.status_code == 200
@@ -176,7 +186,9 @@ class TestUpdateUser:
         update_data = {"email": "newemail@test.com"}
 
         response = client.put(
-            f"/api/users/{test_regular_user.id}", headers=admin_headers, json=update_data
+            f"/api/users/{test_regular_user.id}",
+            headers=admin_headers,
+            json=update_data,
         )
 
         assert response.status_code == 200
@@ -232,7 +244,9 @@ class TestDeleteUser:
         self, client: TestClient, user_headers: dict, test_admin_user: User
     ):
         """Test deleting user without proper permissions."""
-        response = client.delete(f"/api/users/{test_admin_user.id}", headers=user_headers)
+        response = client.delete(
+            f"/api/users/{test_admin_user.id}", headers=user_headers
+        )
 
         # Regular user may not have delete permission or endpoint might allow deletion
         # Accept various responses depending on authorization implementation

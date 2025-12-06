@@ -9,9 +9,15 @@ class AuditLog(Base):
     __tablename__ = "audit_logs"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
-    action = Column(String(50), nullable=False, index=True)  # CREATE, UPDATE, DELETE, LOGIN, etc.
-    resource = Column(String(50), nullable=False, index=True)  # users, roles, permissions, etc.
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
+    action = Column(
+        String(50), nullable=False, index=True
+    )  # CREATE, UPDATE, DELETE, LOGIN, etc.
+    resource = Column(
+        String(50), nullable=False, index=True
+    )  # users, roles, permissions, etc.
     resource_id = Column(Integer, nullable=True)  # ID del recurso afectado
     details = Column(JSON, nullable=True)  # Detalles adicionales en formato JSON
     ip_address = Column(String(45), nullable=True)  # IPv4 o IPv6
@@ -22,4 +28,6 @@ class AuditLog(Base):
     user = relationship("User", foreign_keys=[user_id])
 
     def __repr__(self):
-        return f"<AuditLog(id={self.id}, action={self.action}, resource={self.resource})>"
+        return (
+            f"<AuditLog(id={self.id}, action={self.action}, resource={self.resource})>"
+        )

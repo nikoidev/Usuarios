@@ -70,7 +70,13 @@ class PermissionService:
         page = (skip // limit) + 1 if limit > 0 else 1
         pages = (total + limit - 1) // limit if limit > 0 else 1
 
-        return {"items": items, "total": total, "page": page, "pages": pages, "limit": limit}
+        return {
+            "items": items,
+            "total": total,
+            "page": page,
+            "pages": pages,
+            "limit": limit,
+        }
 
     @staticmethod
     def create_permission(db: Session, permission: PermissionCreate) -> Permission:
@@ -91,7 +97,9 @@ class PermissionService:
     def update_permission(
         db: Session, permission_id: int, permission: PermissionUpdate
     ) -> Optional[Permission]:
-        db_permission = db.query(Permission).filter(Permission.id == permission_id).first()
+        db_permission = (
+            db.query(Permission).filter(Permission.id == permission_id).first()
+        )
         if not db_permission:
             return None
 
@@ -105,7 +113,9 @@ class PermissionService:
 
     @staticmethod
     def delete_permission(db: Session, permission_id: int) -> bool:
-        db_permission = db.query(Permission).filter(Permission.id == permission_id).first()
+        db_permission = (
+            db.query(Permission).filter(Permission.id == permission_id).first()
+        )
         if not db_permission:
             return False
         db.delete(db_permission)

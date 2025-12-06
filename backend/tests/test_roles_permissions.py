@@ -40,7 +40,9 @@ class TestGetRoles:
 class TestGetRole:
     """Test getting single role."""
 
-    def test_get_role_by_id(self, client: TestClient, admin_headers: dict, test_admin_role: Role):
+    def test_get_role_by_id(
+        self, client: TestClient, admin_headers: dict, test_admin_role: Role
+    ):
         """Test getting role by ID."""
         response = client.get(f"/api/roles/{test_admin_role.id}", headers=admin_headers)
 
@@ -63,7 +65,10 @@ class TestCreateRole:
     """Test creating roles."""
 
     def test_create_role_success(
-        self, client: TestClient, admin_headers: dict, test_permissions: list[Permission]
+        self,
+        client: TestClient,
+        admin_headers: dict,
+        test_permissions: list[Permission],
     ):
         """Test creating a new role."""
         role_data = {
@@ -141,7 +146,9 @@ class TestUpdateRole:
 class TestDeleteRole:
     """Test deleting roles."""
 
-    def test_delete_role_success(self, client: TestClient, admin_headers: dict, db: Session):
+    def test_delete_role_success(
+        self, client: TestClient, admin_headers: dict, db: Session
+    ):
         """Test deleting a role."""
         # Create a role to delete
         role = Role(name="ToDelete", description="Role to delete")
@@ -162,7 +169,10 @@ class TestGetPermissions:
     """Test getting permissions list."""
 
     def test_get_permissions_success(
-        self, client: TestClient, admin_headers: dict, test_permissions: list[Permission]
+        self,
+        client: TestClient,
+        admin_headers: dict,
+        test_permissions: list[Permission],
     ):
         """Test getting all permissions."""
         response = client.get("/api/permissions/", headers=admin_headers)
@@ -172,7 +182,9 @@ class TestGetPermissions:
         assert "items" in data
         assert len(data["items"]) >= len(test_permissions)
 
-    def test_get_permissions_filter_by_resource(self, client: TestClient, admin_headers: dict):
+    def test_get_permissions_filter_by_resource(
+        self, client: TestClient, admin_headers: dict
+    ):
         """Test filtering permissions by resource."""
         response = client.get("/api/permissions/?resource=users", headers=admin_headers)
 
@@ -180,7 +192,9 @@ class TestGetPermissions:
         data = response.json()
         assert all(p["resource"] == "users" for p in data["items"])
 
-    def test_get_permissions_filter_by_action(self, client: TestClient, admin_headers: dict):
+    def test_get_permissions_filter_by_action(
+        self, client: TestClient, admin_headers: dict
+    ):
         """Test filtering permissions by action."""
         response = client.get("/api/permissions/?action=read", headers=admin_headers)
 
@@ -195,7 +209,10 @@ class TestGetPermission:
     """Test getting single permission."""
 
     def test_get_permission_by_id(
-        self, client: TestClient, admin_headers: dict, test_permissions: list[Permission]
+        self,
+        client: TestClient,
+        admin_headers: dict,
+        test_permissions: list[Permission],
     ):
         """Test getting permission by ID."""
         perm = test_permissions[0]
@@ -221,7 +238,9 @@ class TestCreatePermission:
             "action": "test",
         }
 
-        response = client.post("/api/permissions/", headers=admin_headers, json=perm_data)
+        response = client.post(
+            "/api/permissions/", headers=admin_headers, json=perm_data
+        )
 
         assert response.status_code in [200, 201]
         data = response.json()
@@ -229,7 +248,10 @@ class TestCreatePermission:
         assert data["code"] == perm_data["code"]
 
     def test_create_permission_duplicate_code(
-        self, client: TestClient, admin_headers: dict, test_permissions: list[Permission]
+        self,
+        client: TestClient,
+        admin_headers: dict,
+        test_permissions: list[Permission],
     ):
         """Test creating permission with duplicate code."""
         perm_data = {
@@ -239,7 +261,9 @@ class TestCreatePermission:
             "action": "test",
         }
 
-        response = client.post("/api/permissions/", headers=admin_headers, json=perm_data)
+        response = client.post(
+            "/api/permissions/", headers=admin_headers, json=perm_data
+        )
 
         assert response.status_code == 400
         detail = response.json()["detail"].lower()
@@ -252,11 +276,17 @@ class TestUpdatePermission:
     """Test updating permissions."""
 
     def test_update_permission_success(
-        self, client: TestClient, admin_headers: dict, test_permissions: list[Permission]
+        self,
+        client: TestClient,
+        admin_headers: dict,
+        test_permissions: list[Permission],
     ):
         """Test updating permission information."""
         perm = test_permissions[0]
-        update_data = {"name": "Updated Permission Name", "description": "Updated description"}
+        update_data = {
+            "name": "Updated Permission Name",
+            "description": "Updated description",
+        }
 
         response = client.put(
             f"/api/permissions/{perm.id}", headers=admin_headers, json=update_data
@@ -272,10 +302,14 @@ class TestUpdatePermission:
 class TestDeletePermission:
     """Test deleting permissions."""
 
-    def test_delete_permission_success(self, client: TestClient, admin_headers: dict, db: Session):
+    def test_delete_permission_success(
+        self, client: TestClient, admin_headers: dict, db: Session
+    ):
         """Test deleting a permission."""
         # Create a permission to delete
-        perm = Permission(name="To Delete", code="to.delete", resource="test", action="delete")
+        perm = Permission(
+            name="To Delete", code="to.delete", resource="test", action="delete"
+        )
         db.add(perm)
         db.commit()
         db.refresh(perm)

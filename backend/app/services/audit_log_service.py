@@ -88,7 +88,13 @@ class AuditLogService:
         page = (skip // limit) + 1 if limit > 0 else 1
         pages = (total + limit - 1) // limit if limit > 0 else 1
 
-        return {"items": items, "total": total, "page": page, "pages": pages, "limit": limit}
+        return {
+            "items": items,
+            "total": total,
+            "page": page,
+            "pages": pages,
+            "limit": limit,
+        }
 
     @staticmethod
     def get_user_activity(db: Session, user_id: int, limit: int = 10):

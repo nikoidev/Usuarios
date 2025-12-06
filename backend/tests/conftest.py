@@ -66,8 +66,18 @@ def test_permissions(db: Session) -> list[Permission]:
     Create test permissions.
     """
     permissions_data = [
-        {"name": "Crear Usuario", "code": "user.create", "resource": "users", "action": "create"},
-        {"name": "Leer Usuario", "code": "user.read", "resource": "users", "action": "read"},
+        {
+            "name": "Crear Usuario",
+            "code": "user.create",
+            "resource": "users",
+            "action": "create",
+        },
+        {
+            "name": "Leer Usuario",
+            "code": "user.read",
+            "resource": "users",
+            "action": "read",
+        },
         {
             "name": "Actualizar Usuario",
             "code": "user.update",
@@ -80,10 +90,30 @@ def test_permissions(db: Session) -> list[Permission]:
             "resource": "users",
             "action": "delete",
         },
-        {"name": "Crear Rol", "code": "role.create", "resource": "roles", "action": "create"},
-        {"name": "Leer Rol", "code": "role.read", "resource": "roles", "action": "read"},
-        {"name": "Actualizar Rol", "code": "role.update", "resource": "roles", "action": "update"},
-        {"name": "Eliminar Rol", "code": "role.delete", "resource": "roles", "action": "delete"},
+        {
+            "name": "Crear Rol",
+            "code": "role.create",
+            "resource": "roles",
+            "action": "create",
+        },
+        {
+            "name": "Leer Rol",
+            "code": "role.read",
+            "resource": "roles",
+            "action": "read",
+        },
+        {
+            "name": "Actualizar Rol",
+            "code": "role.update",
+            "resource": "roles",
+            "action": "update",
+        },
+        {
+            "name": "Eliminar Rol",
+            "code": "role.delete",
+            "resource": "roles",
+            "action": "delete",
+        },
     ]
 
     permissions = []
@@ -192,7 +222,9 @@ def user_token(client: TestClient, test_regular_user: User) -> str:
     """
     Get an authentication token for regular user.
     """
-    response = client.post("/api/auth/login", data={"username": "testuser", "password": "user123"})
+    response = client.post(
+        "/api/auth/login", data={"username": "testuser", "password": "user123"}
+    )
     assert response.status_code == 200
     return response.json()["access_token"]
 

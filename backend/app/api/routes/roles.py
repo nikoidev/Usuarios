@@ -37,7 +37,9 @@ def read_roles(
 
 @router.get("/{role_id}", response_model=RoleResponse)
 def read_role(
-    role_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_active_user)
+    role_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_active_user),
 ):
     role = RoleService.get_role(db, role_id=role_id)
     if role is None:
@@ -47,7 +49,9 @@ def read_role(
 
 @router.post("/", response_model=RoleResponse, status_code=status.HTTP_201_CREATED)
 def create_role(
-    role: RoleCreate, db: Session = Depends(get_db), current_user=Depends(get_current_active_user)
+    role: RoleCreate,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_active_user),
 ):
     # Check if role already exists
     db_role = RoleService.get_role_by_name(db, name=role.name)
@@ -72,7 +76,9 @@ def update_role(
 
 @router.delete("/{role_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_role(
-    role_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_active_user)
+    role_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_active_user),
 ):
     success = RoleService.delete_role(db, role_id=role_id)
     if not success:

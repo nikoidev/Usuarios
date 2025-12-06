@@ -19,4 +19,6 @@ class Permission(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
-    roles = relationship("Role", secondary=role_permissions, back_populates="permissions")
+    roles = relationship(
+        "Role", secondary=role_permissions, back_populates="permissions"
+    )

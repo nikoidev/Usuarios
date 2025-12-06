@@ -20,7 +20,9 @@ def read_users(
     ),
     role_id: Optional[int] = Query(None, description="Filter by role ID"),
     is_active: Optional[bool] = Query(None, description="Filter by active status"),
-    order_by: str = Query("id", description="Field to order by (id, username, email, created_at)"),
+    order_by: str = Query(
+        "id", description="Field to order by (id, username, email, created_at)"
+    ),
     order_desc: bool = Query(False, description="Order descending"),
     db: Session = Depends(get_db),
     current_user=Depends(get_current_active_user),
@@ -41,7 +43,9 @@ def read_users(
 
 @router.get("/{user_id}", response_model=UserResponse)
 def read_user(
-    user_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_active_user)
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_active_user),
 ):
     user = UserService.get_user(db, user_id=user_id)
     if user is None:
@@ -51,7 +55,9 @@ def read_user(
 
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(
-    user: UserCreate, db: Session = Depends(get_db), current_user=Depends(get_current_active_user)
+    user: UserCreate,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_active_user),
 ):
     # Check if user already exists
     db_user = UserService.get_user_by_email(db, email=user.email)
@@ -80,7 +86,9 @@ def update_user(
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(
-    user_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_active_user)
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_active_user),
 ):
     success = UserService.delete_user(db, user_id=user_id)
     if not success:

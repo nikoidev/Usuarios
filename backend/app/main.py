@@ -43,4 +43,8 @@ app.include_router(profile.router, prefix="/api/profile", tags=["Profile"])
 
 @app.get("/")
 def root():
-    return {"message": "User Management System API", "version": "1.0.0", "docs": "/docs"}
+    return {
+        "message": "User Management System API",
+        "version": "1.0.0",
+        "docs": "/docs",
+    }

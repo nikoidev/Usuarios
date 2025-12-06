@@ -76,7 +76,13 @@ class UserService:
         page = (skip // limit) + 1 if limit > 0 else 1
         pages = (total + limit - 1) // limit if limit > 0 else 1
 
-        return {"items": items, "total": total, "page": page, "pages": pages, "limit": limit}
+        return {
+            "items": items,
+            "total": total,
+            "page": page,
+            "pages": pages,
+            "limit": limit,
+        }
 
     @staticmethod
     def create_user(db: Session, user: UserCreate) -> User:
@@ -110,7 +116,9 @@ class UserService:
 
         # Handle password separately
         if "password" in update_data:
-            update_data["hashed_password"] = get_password_hash(update_data.pop("password"))
+            update_data["hashed_password"] = get_password_hash(
+                update_data.pop("password")
+            )
 
         # Handle roles separately
         if "role_ids" in update_data:

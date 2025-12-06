@@ -126,7 +126,11 @@ async def upload_avatar(
         action=AuditAction.UPDATE,
         resource=AuditResource.PROFILE,
         resource_id=current_user.id,  # type: ignore[arg-type]
-        details={"field": "avatar_url", "old_value": old_avatar, "new_value": avatar_url},
+        details={
+            "field": "avatar_url",
+            "old_value": old_avatar,
+            "new_value": avatar_url,
+        },
     )
 
     return {"message": "Avatar actualizado exitosamente", "avatar_url": avatar_url}

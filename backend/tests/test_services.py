@@ -56,7 +56,9 @@ class TestUserService:
         result = UserService.get_users(db, role_id=test_admin_role.id)
 
         assert result["total"] >= 1
-        assert all(any(r.id == test_admin_role.id for r in u.roles) for u in result["items"])
+        assert all(
+            any(r.id == test_admin_role.id for r in u.roles) for u in result["items"]
+        )
 
     def test_create_user(self, db: Session, test_user_role: Role):
         """Test creating a new user."""
@@ -206,7 +208,10 @@ class TestPermissionService:
     def test_create_permission(self, db: Session):
         """Test creating a new permission."""
         perm_data = PermissionCreate(
-            name="Test Permission", code="test.permission", resource="test", action="test"
+            name="Test Permission",
+            code="test.permission",
+            resource="test",
+            action="test",
         )
 
         perm = PermissionService.create_permission(db, perm_data)
