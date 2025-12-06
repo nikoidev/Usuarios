@@ -2,20 +2,20 @@
 Pytest configuration and fixtures for testing.
 This file contains shared fixtures used across all tests.
 """
+from typing import Dict, Generator
+
 import pytest
-from typing import Generator, Dict
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from app.main import app
 from app.core.database import Base, get_db
 from app.core.security import get_password_hash
-from app.models.user import User
-from app.models.role import Role
+from app.main import app
 from app.models.permission import Permission
-
+from app.models.role import Role
+from app.models.user import User
 
 # Use in-memory SQLite for testing
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
@@ -47,12 +47,13 @@ def client(db: Session) -> Generator[TestClient, None, None]:
     """
     Create a test client with database override.
     """
+
     def override_get_db():
         try:
             yield db
         finally:
             pass
-    
+
     app.dependency_overrides[get_db] = override_get_db
     with TestClient(app) as test_client:
         yield test_client
@@ -67,25 +68,35 @@ def test_permissions(db: Session) -> list[Permission]:
     permissions_data = [
         {"name": "Crear Usuario", "code": "user.create", "resource": "users", "action": "create"},
         {"name": "Leer Usuario", "code": "user.read", "resource": "users", "action": "read"},
-        {"name": "Actualizar Usuario", "code": "user.update", "resource": "users", "action": "update"},
-        {"name": "Eliminar Usuario", "code": "user.delete", "resource": "users", "action": "delete"},
+        {
+            "name": "Actualizar Usuario",
+            "code": "user.update",
+            "resource": "users",
+            "action": "update",
+        },
+        {
+            "name": "Eliminar Usuario",
+            "code": "user.delete",
+            "resource": "users",
+            "action": "delete",
+        },
         {"name": "Crear Rol", "code": "role.create", "resource": "roles", "action": "create"},
         {"name": "Leer Rol", "code": "role.read", "resource": "roles", "action": "read"},
         {"name": "Actualizar Rol", "code": "role.update", "resource": "roles", "action": "update"},
         {"name": "Eliminar Rol", "code": "role.delete", "resource": "roles", "action": "delete"},
     ]
-    
+
     permissions = []
     for perm_data in permissions_data:
         permission = Permission(**perm_data)
         db.add(permission)
         permissions.append(permission)
-    
+
     db.commit()
-    
+
     for p in permissions:
         db.refresh(p)
-    
+
     return permissions
 
 
@@ -97,7 +108,7 @@ def test_admin_role(db: Session, test_permissions: list[Permission]) -> Role:
     admin_role = Role(
         name="Administrador",
         description="Administrador con acceso completo",
-        permissions=test_permissions
+        permissions=test_permissions,
     )
     db.add(admin_role)
     db.commit()
@@ -114,7 +125,7 @@ def test_user_role(db: Session, test_permissions: list[Permission]) -> Role:
     user_role = Role(
         name="Usuario",
         description="Usuario regular con acceso de lectura",
-        permissions=read_permissions
+        permissions=read_permissions,
     )
     db.add(user_role)
     db.commit()
@@ -135,7 +146,7 @@ def test_admin_user(db: Session, test_admin_role: Role) -> User:
         last_name="Admin",
         is_active=True,
         is_superuser=True,
-        roles=[test_admin_role]
+        roles=[test_admin_role],
     )
     db.add(user)
     db.commit()
@@ -156,7 +167,7 @@ def test_regular_user(db: Session, test_user_role: Role) -> User:
         last_name="User",
         is_active=True,
         is_superuser=False,
-        roles=[test_user_role]
+        roles=[test_user_role],
     )
     db.add(user)
     db.commit()
@@ -170,8 +181,7 @@ def admin_token(client: TestClient, test_admin_user: User) -> str:
     Get an authentication token for admin user.
     """
     response = client.post(
-        "/api/auth/login",
-        data={"username": "testadmin", "password": "admin123"}
+        "/api/auth/login", data={"username": "testadmin", "password": "admin123"}
     )
     assert response.status_code == 200
     return response.json()["access_token"]
@@ -182,10 +192,7 @@ def user_token(client: TestClient, test_regular_user: User) -> str:
     """
     Get an authentication token for regular user.
     """
-    response = client.post(
-        "/api/auth/login",
-        data={"username": "testuser", "password": "user123"}
-    )
+    response = client.post("/api/auth/login", data={"username": "testuser", "password": "user123"})
     assert response.status_code == 200
     return response.json()["access_token"]
 

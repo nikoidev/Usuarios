@@ -1,8 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
-from sqlalchemy.orm import Session
 from typing import List, Optional
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy.orm import Session
+
 from ...core.database import get_db
-from ...schemas.permission import PermissionCreate, PermissionUpdate, PermissionResponse, PermissionListResponse
+from ...schemas.permission import (
+    PermissionCreate,
+    PermissionListResponse,
+    PermissionResponse,
+    PermissionUpdate,
+)
 from ...services.permission_service import PermissionService
 from ..deps import get_current_active_user
 
@@ -20,28 +27,26 @@ def read_permissions(
     order_by: str = Query("id", description="Field to order by"),
     order_desc: bool = Query(False, description="Order descending"),
     db: Session = Depends(get_db),
-    current_user = Depends(get_current_active_user)
+    current_user=Depends(get_current_active_user),
 ):
     skip = (page - 1) * limit
     result = PermissionService.get_permissions(
-        db, 
-        skip=skip, 
+        db,
+        skip=skip,
         limit=limit,
         search=search,
         resource=resource,
         action=action,
         is_active=is_active,
         order_by=order_by,
-        order_desc=order_desc
+        order_desc=order_desc,
     )
     return result
 
 
 @router.get("/{permission_id}", response_model=PermissionResponse)
 def read_permission(
-    permission_id: int,
-    db: Session = Depends(get_db),
-    current_user = Depends(get_current_active_user)
+    permission_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_active_user)
 ):
     permission = PermissionService.get_permission(db, permission_id=permission_id)
     if permission is None:
@@ -53,13 +58,13 @@ def read_permission(
 def create_permission(
     permission: PermissionCreate,
     db: Session = Depends(get_db),
-    current_user = Depends(get_current_active_user)
+    current_user=Depends(get_current_active_user),
 ):
     # Check if permission code already exists
     db_permission = PermissionService.get_permission_by_code(db, code=permission.code)
     if db_permission:
         raise HTTPException(status_code=400, detail="Permission code already registered")
-    
+
     return PermissionService.create_permission(db=db, permission=permission)
 
 
@@ -68,9 +73,11 @@ def update_permission(
     permission_id: int,
     permission: PermissionUpdate,
     db: Session = Depends(get_db),
-    current_user = Depends(get_current_active_user)
+    current_user=Depends(get_current_active_user),
 ):
-    db_permission = PermissionService.update_permission(db, permission_id=permission_id, permission=permission)
+    db_permission = PermissionService.update_permission(
+        db, permission_id=permission_id, permission=permission
+    )
     if db_permission is None:
         raise HTTPException(status_code=404, detail="Permission not found")
     return db_permission
@@ -78,9 +85,7 @@ def update_permission(
 
 @router.delete("/{permission_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_permission(
-    permission_id: int,
-    db: Session = Depends(get_db),
-    current_user = Depends(get_current_active_user)
+    permission_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_active_user)
 ):
     success = PermissionService.delete_permission(db, permission_id=permission_id)
     if not success:

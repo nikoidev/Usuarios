@@ -1,9 +1,11 @@
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from pathlib import Path
-from .core.database import engine, Base
-from .api.routes import auth, users, roles, permissions, audit_logs, profile
+
+from .api.routes import audit_logs, auth, permissions, profile, roles, users
+from .core.database import Base, engine
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -11,7 +13,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="User Management System API",
     description="Complete CRUD API for Users, Roles, and Permissions with Audit Log",
-    version="2.0.0"
+    version="2.0.0",
 )
 
 # Configure CORS
@@ -41,8 +43,4 @@ app.include_router(profile.router, prefix="/api/profile", tags=["Profile"])
 
 @app.get("/")
 def root():
-    return {
-        "message": "User Management System API",
-        "version": "1.0.0",
-        "docs": "/docs"
-    }
+    return {"message": "User Management System API", "version": "1.0.0", "docs": "/docs"}

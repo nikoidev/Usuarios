@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
-from sqlalchemy.orm import Session
 from typing import List, Optional
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy.orm import Session
+
 from ...core.database import get_db
-from ...schemas.role import RoleCreate, RoleUpdate, RoleResponse, RoleListResponse
+from ...schemas.role import RoleCreate, RoleListResponse, RoleResponse, RoleUpdate
 from ...services.role_service import RoleService
 from ..deps import get_current_active_user
 
@@ -18,26 +20,24 @@ def read_roles(
     order_by: str = Query("id", description="Field to order by"),
     order_desc: bool = Query(False, description="Order descending"),
     db: Session = Depends(get_db),
-    current_user = Depends(get_current_active_user)
+    current_user=Depends(get_current_active_user),
 ):
     skip = (page - 1) * limit
     result = RoleService.get_roles(
-        db, 
-        skip=skip, 
+        db,
+        skip=skip,
         limit=limit,
         search=search,
         is_active=is_active,
         order_by=order_by,
-        order_desc=order_desc
+        order_desc=order_desc,
     )
     return result
 
 
 @router.get("/{role_id}", response_model=RoleResponse)
 def read_role(
-    role_id: int,
-    db: Session = Depends(get_db),
-    current_user = Depends(get_current_active_user)
+    role_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_active_user)
 ):
     role = RoleService.get_role(db, role_id=role_id)
     if role is None:
@@ -47,15 +47,13 @@ def read_role(
 
 @router.post("/", response_model=RoleResponse, status_code=status.HTTP_201_CREATED)
 def create_role(
-    role: RoleCreate,
-    db: Session = Depends(get_db),
-    current_user = Depends(get_current_active_user)
+    role: RoleCreate, db: Session = Depends(get_db), current_user=Depends(get_current_active_user)
 ):
     # Check if role already exists
     db_role = RoleService.get_role_by_name(db, name=role.name)
     if db_role:
         raise HTTPException(status_code=400, detail="Role name already registered")
-    
+
     return RoleService.create_role(db=db, role=role)
 
 
@@ -64,7 +62,7 @@ def update_role(
     role_id: int,
     role: RoleUpdate,
     db: Session = Depends(get_db),
-    current_user = Depends(get_current_active_user)
+    current_user=Depends(get_current_active_user),
 ):
     db_role = RoleService.update_role(db, role_id=role_id, role=role)
     if db_role is None:
@@ -74,9 +72,7 @@ def update_role(
 
 @router.delete("/{role_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_role(
-    role_id: int,
-    db: Session = Depends(get_db),
-    current_user = Depends(get_current_active_user)
+    role_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_active_user)
 ):
     success = RoleService.delete_role(db, role_id=role_id)
     if not success:

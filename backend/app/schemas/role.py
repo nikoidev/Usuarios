@@ -1,6 +1,7 @@
-from pydantic import BaseModel
-from typing import Optional, List
 from datetime import datetime
+from typing import List, Optional
+
+from pydantic import BaseModel
 
 
 class RoleBase(BaseModel):
@@ -43,6 +44,7 @@ class RoleResponse(RoleBase):
 
 class RoleListResponse(BaseModel):
     """Paginated response for role list"""
+
     items: List[RoleResponse]
     total: int
     page: int
