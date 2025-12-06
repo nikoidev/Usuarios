@@ -137,3 +137,8 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+#volumen docker
+usuarios_pgadmin_data/
+usuarios_postgres_data/
+
