@@ -28,6 +28,7 @@ repos:
         language_version: python3.12
         args: ['--line-length=88']
         files: ^backend/
+        exclude: ^backend/alembic/env\.py$
 
   # Import sorting with isort
   - repo: https://github.com/PyCQA/isort
@@ -36,6 +37,7 @@ repos:
       - id: isort
         args: ['--profile', 'black', '--line-length', '100']
         files: ^backend/
+        exclude: ^backend/alembic/env\.py$
 
   # Linting with flake8
   - repo: https://github.com/PyCQA/flake8

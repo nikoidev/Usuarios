@@ -122,11 +122,11 @@ pipenv install
 cp .env.example .env
 # Edita .env con tus valores
 
-# Ejecutar migraciones
-pipenv run python migrate_to_v2.py
-
-# Inicializar datos (usuarios, roles, permisos)
+# Inicializar base de datos (migraciones + seed data)
 pipenv run python init_db.py
+
+# O aplicar solo migraciones
+pipenv run alembic upgrade head
 
 # Iniciar servidor
 pipenv run python run.py
@@ -134,6 +134,8 @@ pipenv run python run.py
 
 Backend corriendo en: **http://localhost:8000**  
 Documentación API: **http://localhost:8000/docs**
+
+> **📚 Migraciones de Base de Datos**: Este proyecto usa [Alembic](https://alembic.sqlalchemy.org/) para gestionar el esquema de la base de datos. Ver [docs/ALEMBIC.md](docs/ALEMBIC.md) para más detalles.
 
 ### 4️⃣ Configurar Frontend
 
@@ -175,6 +177,10 @@ Usuario Regular:
 ```
 user-management-system/
 ├── backend/                  # API FastAPI
+│   ├── alembic/             # 🆕 Database migrations
+│   │   ├── versions/        # Migration files
+│   │   ├── env.py           # Alembic config
+│   │   └── script.py.mako   # Migration template
 │   ├── app/
 │   │   ├── api/             # Endpoints REST
 │   │   │   ├── routes/      # auth, users, roles, permissions, audit_logs, profile
@@ -189,10 +195,18 @@ user-management-system/
 │   │   ├── services/        # Lógica de negocio
 │   │   ├── utils/           # Utilidades (audit)
 │   │   └── templates/       # Templates HTML para emails
+│   ├── tests/               # 🆕 Test suite (pytest)
+│   │   ├── conftest.py      # Fixtures compartidos
+│   │   ├── test_auth.py     # Tests de autenticación
+│   │   ├── test_users.py    # Tests de usuarios
+│   │   └── test_services.py # Tests de servicios
 │   ├── uploads/             # Archivos subidos (avatars)
+│   ├── alembic.ini          # 🆕 Alembic configuration
 │   ├── Pipfile              # Dependencias Python
-│   ├── init_db.py           # Script de inicialización
-│   ├── migrate_to_v2.py     # Script de migración
+│   ├── pytest.ini           # 🆕 Pytest configuration
+│   ├── pyproject.toml       # 🆕 Tool configs (black, isort, mypy)
+│   ├── init_db.py           # Migrations + seed data
+│   ├── migrate.py           # 🆕 Migration helper script
 │   └── run.py               # Entry point
 │
 ├── frontend/                # App Next.js
@@ -219,7 +233,17 @@ user-management-system/
 │   ├── types/               # TypeScript types
 │   └── package.json
 │
-└── docker-compose.yml       # PostgreSQL + pgAdmin
+├── .github/                 # 🆕 CI/CD workflows
+│   └── workflows/
+│       ├── ci-tests.yml     # Automated testing
+│       ├── ci-quality.yml   # Code quality
+│       └── ci-security.yml  # Security scans
+├── docs/                    # 🆕 Documentation
+│   ├── ALEMBIC.md          # Migration guide
+│   └── CI_CD.md            # CI/CD guide
+├── .pre-commit-config.yaml  # 🆕 Pre-commit hooks
+├── docker-compose.yml       # PostgreSQL + pgAdmin
+└── CHANGELOG.md            # 🆕 Version history
 ```
 
 ---
@@ -502,7 +526,7 @@ Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más información.
 
 ## 📞 Soporte
 
-¿Problemas o preguntas? 
+¿Problemas o preguntas?
 
 - 📖 [Wiki](https://github.com/tu-usuario/repo/wiki)
 - 🐛 [Issues](https://github.com/tu-usuario/repo/issues)
