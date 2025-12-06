@@ -1,6 +1,7 @@
-from pydantic import BaseModel
-from typing import Optional, Dict, Any, List
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel
 
 
 class AuditLogBase(BaseModel):
@@ -20,7 +21,7 @@ class AuditLogResponse(AuditLogBase):
     id: int
     user_id: Optional[int] = None
     created_at: datetime
-    
+
     # User info (optional, for frontend display)
     user_username: Optional[str] = None
     user_email: Optional[str] = None
@@ -31,9 +32,9 @@ class AuditLogResponse(AuditLogBase):
 
 class AuditLogListResponse(BaseModel):
     """Paginated response for audit log list"""
+
     items: List[AuditLogResponse]
     total: int
     page: int
     pages: int
     limit: int
-

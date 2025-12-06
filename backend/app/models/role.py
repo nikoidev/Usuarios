@@ -1,9 +1,10 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text
+from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+
 from ..core.database import Base
-from .user_role import user_roles
 from .role_permission import role_permissions
+from .user_role import user_roles
 
 
 class Role(Base):
@@ -17,4 +18,6 @@ class Role(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     users = relationship("User", secondary=user_roles, back_populates="roles")
-    permissions = relationship("Permission", secondary=role_permissions, back_populates="roles")
+    permissions = relationship(
+        "Permission", secondary=role_permissions, back_populates="roles"
+    )

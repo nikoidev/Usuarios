@@ -1,6 +1,8 @@
-from sqlalchemy.orm import Session
+from typing import Any, Dict, Optional
+
 from fastapi import Request
-from typing import Optional, Dict, Any
+from sqlalchemy.orm import Session
+
 from ..services.audit_log_service import AuditLogService
 
 
@@ -11,12 +13,12 @@ def log_action(
     action: str,
     resource: str,
     resource_id: Optional[int] = None,
-    details: Optional[Dict[str, Any]] = None
+    details: Optional[Dict[str, Any]] = None,
 ):
     """Helper function to log actions"""
     ip_address = request.client.host if request.client else None
     user_agent = request.headers.get("user-agent")
-    
+
     AuditLogService.create_log(
         db=db,
         user_id=user_id,
@@ -25,7 +27,7 @@ def log_action(
         resource_id=resource_id,
         details=details,
         ip_address=ip_address,
-        user_agent=user_agent
+        user_agent=user_agent,
     )
 
 
@@ -38,13 +40,13 @@ class AuditAction:
     PASSWORD_CHANGED = "PASSWORD_CHANGED"
     PASSWORD_RESET_REQUESTED = "PASSWORD_RESET_REQUESTED"
     PASSWORD_RESET = "PASSWORD_RESET"
-    
+
     # CRUD actions
     CREATE = "CREATE"
     READ = "READ"
     UPDATE = "UPDATE"
     DELETE = "DELETE"
-    
+
     # Specific actions
     ROLE_ASSIGNED = "ROLE_ASSIGNED"
     ROLE_REMOVED = "ROLE_REMOVED"
@@ -61,4 +63,3 @@ class AuditResource:
     PERMISSION = "permission"
     AUTH = "auth"
     PROFILE = "profile"
-

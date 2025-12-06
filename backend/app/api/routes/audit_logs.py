@@ -1,10 +1,12 @@
+from typing import Optional
+
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
-from typing import Optional
+
 from ...core.database import get_db
+from ...models.user import User
 from ...schemas.audit_log import AuditLogListResponse, AuditLogResponse
 from ...services.audit_log_service import AuditLogService
-from ...models.user import User
 from ..deps import get_current_active_user
 
 router = APIRouter()
@@ -21,7 +23,7 @@ def get_audit_logs(
     order_by: str = Query("created_at", description="Field to order by"),
     order_desc: bool = Query(True, description="Order descending (newest first)"),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(get_current_active_user),
 ):
     """
     Get audit logs with pagination and filters.
@@ -37,9 +39,9 @@ def get_audit_logs(
         resource=resource,
         search=search,
         order_by=order_by,
-        order_desc=order_desc
+        order_desc=order_desc,
     )
-    
+
     # Enrich with user information
     enriched_items = []
     for log in result["items"]:
@@ -54,16 +56,16 @@ def get_audit_logs(
             "user_agent": log.user_agent,
             "created_at": log.created_at,
             "user_username": log.user.username if log.user else None,
-            "user_email": log.user.email if log.user else None
+            "user_email": log.user.email if log.user else None,
         }
         enriched_items.append(log_dict)
-    
+
     return {
         "items": enriched_items,
         "total": result["total"],
         "page": result["page"],
         "pages": result["pages"],
-        "limit": result["limit"]
+        "limit": result["limit"],
     }
 
 
@@ -71,11 +73,11 @@ def get_audit_logs(
 def get_recent_logs(
     limit: int = Query(10, ge=1, le=50, description="Number of recent logs"),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(get_current_active_user),
 ):
     """Get most recent audit logs (for dashboard widget)"""
     logs = AuditLogService.get_recent_logs(db=db, limit=limit)
-    
+
     enriched_logs = []
     for log in logs:
         log_dict = {
@@ -89,10 +91,10 @@ def get_recent_logs(
             "user_agent": log.user_agent,
             "created_at": log.created_at,
             "user_username": log.user.username if log.user else None,
-            "user_email": log.user.email if log.user else None
+            "user_email": log.user.email if log.user else None,
         }
         enriched_logs.append(log_dict)
-    
+
     return enriched_logs
 
 
@@ -100,11 +102,13 @@ def get_recent_logs(
 def get_my_activity(
     limit: int = Query(20, ge=1, le=100, description="Number of activities"),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(get_current_active_user),
 ):
     """Get current user's recent activity"""
-    logs = AuditLogService.get_user_activity(db=db, user_id=current_user.id, limit=limit)
-    
+    logs = AuditLogService.get_user_activity(
+        db=db, user_id=current_user.id, limit=limit  # type: ignore[arg-type]
+    )
+
     enriched_logs = []
     for log in logs:
         log_dict = {
@@ -118,9 +122,8 @@ def get_my_activity(
             "user_agent": log.user_agent,
             "created_at": log.created_at,
             "user_username": current_user.username,
-            "user_email": current_user.email
+            "user_email": current_user.email,
         }
         enriched_logs.append(log_dict)
-    
-    return enriched_logs
 
+    return enriched_logs
