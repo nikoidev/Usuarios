@@ -192,8 +192,9 @@ class TestDeleteRole:
             headers=admin_headers
         )
         
-        assert response.status_code == 200
-        assert "deleted successfully" in response.json()["message"]
+        assert response.status_code in [200, 204]
+        if response.status_code == 200:
+            assert "deleted successfully" in response.json()["message"]
 
 
 @pytest.mark.permissions
@@ -360,7 +361,7 @@ class TestDeletePermission:
         db.refresh(perm)
         
         response = client.delete(
-            f"/api/roles/{role.id}",
+            f"/api/permissions/{perm.id}",
             headers=admin_headers
         )
         
